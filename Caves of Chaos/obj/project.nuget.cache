@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "WpnaF1xHQN+dOpotWBxl2wkq+APNmAKtIFjwLGwE3xVmfOixaYst+ArtXDHr0KMNCUCKE/x2mV4PEKmBRUtukg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\catma\\OneDrive\\Documents\\Caves of Chaos\\Caves of Chaos\\Caves of Chaos.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\catma\\.nuget\\packages\\monogame.framework.desktopgl\\3.8.1.303\\monogame.framework.desktopgl.3.8.1.303.nupkg.sha512",
+    "C:\\Users\\catma\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\catma\\.nuget\\packages\\sadconsole\\9.2.2\\sadconsole.9.2.2.nupkg.sha512",
+    "C:\\Users\\catma\\.nuget\\packages\\sadconsole.host.monogame\\9.2.2\\sadconsole.host.monogame.9.2.2.nupkg.sha512",
+    "C:\\Users\\catma\\.nuget\\packages\\thesadrogue.primitives\\1.1.1\\thesadrogue.primitives.1.1.1.nupkg.sha512",
+    "C:\\Users\\catma\\.nuget\\packages\\thesadrogue.primitives.monogame\\1.0.0\\thesadrogue.primitives.monogame.1.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
