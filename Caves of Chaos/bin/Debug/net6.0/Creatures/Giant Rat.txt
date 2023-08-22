@@ -1,0 +1,8 @@
+{
+  "name": "Giant Rat",
+  "symbol": "R",
+  "color": "brown",
+  "health": 10,
+  "strength": 4,
+  "tags": ["AGGRESSIVE"]
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Rat",
+  "symbol": "r",
+  "color": "brown",
+  "health": 1,
+  "strength": 1,
+  "tags": []
+}
