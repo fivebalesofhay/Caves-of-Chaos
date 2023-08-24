@@ -64,11 +64,11 @@ namespace Caves_of_Chaos.GridScripts
 
             for (int i = 0; i < templates.Count; i++)
             {
-                Creature creature = new Creature(new Point(Program.random.Next(width), Program.random.Next(height)),
+                Creature creature = new Creature(Utility.RandomPoint(),
                     templates[i]);
                 while (GetTile(creature.GetPosition()).isWall == true)
                 {
-                    creature.MoveTo(new Point(Program.random.Next(width), Program.random.Next(height)));
+                    creature.MoveTo(Utility.RandomPoint());
                 }
             }
         }
@@ -83,14 +83,7 @@ namespace Caves_of_Chaos.GridScripts
             for (int i = 0; i < WALKER_STEPS; i++)
             {
                 // Choose random direction:
-                Point direction = new Point(0, 0);
-                if (Program.random.NextDouble() > 0.5)
-                {
-                    direction = new Point(Program.random.Next(2) * 2 - 1, 0); // left/right
-                } else
-                {
-                    direction = new Point(0, Program.random.Next(2) * 2 - 1); // up/down
-                }
+                Point direction = Utility.RandomDirection();
                 int length = Program.random.Next(6) + 1;
 
                 while (walker.X + direction.X * length <= 0 || walker.X + direction.X * length >= width - 1

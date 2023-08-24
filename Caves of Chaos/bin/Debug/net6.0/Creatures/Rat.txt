@@ -1,8 +1,10 @@
 {
-  "name": "Rat",
+  "name": "rat",
   "symbol": "r",
   "color": "brown",
   "health": 1,
   "strength": 1,
-  "tags": []
+  "tags": [],
+  "resistances": [],
+  "resistanceStrengths": []
 }

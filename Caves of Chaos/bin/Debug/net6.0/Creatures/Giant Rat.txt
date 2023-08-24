@@ -1,8 +1,10 @@
 {
-  "name": "Giant Rat",
+  "name": "giant rat",
   "symbol": "R",
   "color": "brown",
   "health": 10,
   "strength": 4,
-  "tags": ["AGGRESSIVE"]
+  "tags": ["AGGRESSIVE"],
+  "resistances": ["bludgeoning"],
+  "resistanceStrengths": [2]
 }

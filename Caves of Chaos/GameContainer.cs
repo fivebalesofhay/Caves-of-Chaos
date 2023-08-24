@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static GameSettings;
 using static Caves_of_Chaos.GridScripts.GridManager;
+using static Caves_of_Chaos.CreatureScripts.PlayerManager;
 using System.ComponentModel;
 using Caves_of_Chaos.CreatureScripts;
 using SadConsole.Input;
@@ -80,21 +81,41 @@ namespace Caves_of_Chaos
 
         public void DrawGrid()
         {
-            for (int i = 0; i < activeGrid.tiles.GetLength(0); i++)
+            int leftMargin = player.GetPosition().X - GRID_CONSOLE_WIDTH / 2;
+            int topMargin = player.GetPosition().Y - GRID_CONSOLE_HEIGHT / 2;
+
+            if (leftMargin < 0)
             {
-                for (int j = 0; j < activeGrid.tiles.GetLength(1); j++)
+                leftMargin = 0;
+            }
+            if (leftMargin + GRID_CONSOLE_WIDTH > activeGrid.width)
+            {
+                leftMargin = activeGrid.width - GRID_CONSOLE_WIDTH;
+            }
+            if (topMargin < 0)
+            {
+                topMargin = 0;
+            }
+            if (topMargin + GRID_CONSOLE_HEIGHT > activeGrid.height)
+            {
+                topMargin = activeGrid.height - GRID_CONSOLE_HEIGHT;
+            }
+
+            for (int i = leftMargin; i < leftMargin + GRID_CONSOLE_WIDTH; i++)
+            {
+                for (int j = topMargin; j < topMargin + GRID_CONSOLE_HEIGHT; j++)
                 {
                     if (activeGrid.tiles[i, j].occupant != null)
                     {
-                        gridConsole.SetCellAppearance(i, j, activeGrid.tiles[i, j].occupant.glyph);
+                        gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, activeGrid.tiles[i, j].occupant.glyph);
                     }
                     else if (activeGrid.tiles[i, j].isWall)
                     {
-                        gridConsole.SetCellAppearance(i, j, new ColoredGlyph(Palette.white, Palette.black, '#'));
+                        gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.white, Palette.black, '#'));
                     }
                     else
                     {
-                        gridConsole.SetCellAppearance(i, j, new ColoredGlyph(Palette.white, Palette.black, '.'));
+                        gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.white, Palette.black, '.'));
                     }
                 }
             }

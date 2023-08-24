@@ -14,37 +14,37 @@ namespace Caves_of_Chaos.CreatureScripts
 
         public static void Init()
         {
+            // Initalize the player (note: find a better way to do this)
             CreatureTemplate playerTemplate = new CreatureTemplate();
             playerTemplate.name = "Player";
             playerTemplate.symbol = "@";
             playerTemplate.color = "white";
             playerTemplate.health = 100;
-            playerTemplate.strength = 10;
+            playerTemplate.strength = 5;
             playerTemplate.tags = new String[0];
-            player = new Creature(new Point(Program.random.Next(activeGrid.width), Program.random.Next(activeGrid.height)),
-                playerTemplate);
+            player = new Creature(Utility.RandomPoint(), playerTemplate);
             while(activeGrid.GetTile(player.GetPosition()).isWall == true)
             {
-                player.MoveTo(new Point(Program.random.Next(activeGrid.width), Program.random.Next(activeGrid.height)));
+                player.MoveTo(Utility.RandomPoint());
             }
         }
 
         public static void HandleInput(Keyboard keyboard)
         {
-            if (keyboard.IsKeyPressed(Keys.Up))
+            if (keyboard.IsKeyPressed(Keys.Up) || keyboard.IsKeyPressed(Keys.NumPad8))
             {
                 PlayerManager.player.Move(new Point(0, -1));
             }
-            else if (keyboard.IsKeyPressed(Keys.Down))
+            else if (keyboard.IsKeyPressed(Keys.Down) || keyboard.IsKeyPressed(Keys.NumPad2))
             {
                 PlayerManager.player.Move(new Point(0, 1));
             }
 
-            if (keyboard.IsKeyPressed(Keys.Left))
+            if (keyboard.IsKeyPressed(Keys.Left) || keyboard.IsKeyPressed(Keys.NumPad4))
             {
                 PlayerManager.player.Move(new Point(-1, 0));
             }
-            else if (keyboard.IsKeyPressed(Keys.Right))
+            else if (keyboard.IsKeyPressed(Keys.Right) || keyboard.IsKeyPressed(Keys.NumPad6))
             {
                 PlayerManager.player.Move(new Point(1, 0));
             }
