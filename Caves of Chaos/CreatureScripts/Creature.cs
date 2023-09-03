@@ -18,6 +18,9 @@ namespace Caves_of_Chaos.CreatureScripts
 
         public ColoredGlyph glyph = new ColoredGlyph();
         public String name;
+        public int minDepth;
+        public int maxDepth;
+        public double spawnRatio;
         public int maxHealth;
         public double baseAttackStrength;
         public String[] tags;
@@ -25,7 +28,7 @@ namespace Caves_of_Chaos.CreatureScripts
 
         public double health;
 
-        public Creature(Point initialPosition, CreatureTemplate template) 
+        public Creature(Point initialPosition, Grid grid, CreatureTemplate template) 
         { 
             position = initialPosition;
             this.glyph = new ColoredGlyph(Palette.colors[template.color], Palette.black, template.symbol.ToCharArray()[0]);
@@ -45,7 +48,8 @@ namespace Caves_of_Chaos.CreatureScripts
                 }
             }
 
-            GridManager.activeGrid.tiles[position.X, position.Y].occupant = this;
+            grid.tiles[position.X, position.Y].occupant = this;
+            grid.creatures.Add(this);
             health = maxHealth;
         }
 
@@ -74,14 +78,24 @@ namespace Caves_of_Chaos.CreatureScripts
 
         public void Attack(Creature creature)
         {
-            double damage = baseAttackStrength * Math.Pow(2, (-creature.GetResistance("bludgeoning")));
+            double damage = baseAttackStrength * Math.Pow(2, -creature.GetResistance("bludgeoning"));
             LogConsole.UpdateLog(name + " attacks " + creature.name + " for " + damage + " damage!");
-            creature.Damage(baseAttackStrength);
+            creature.Damage(damage);
         }
 
         public void Damage(double amount)
         {
             health -= amount;
+            if (health <= 0)
+            {
+                Die();
+            }
+        }
+
+        public void Die()
+        {
+            activeGrid.creatures.Remove(this);
+            activeGrid.GetTile(position).occupant = null;
         }
 
         public int GetResistance(String type)

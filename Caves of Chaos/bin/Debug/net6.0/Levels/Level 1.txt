@@ -1,0 +1,6 @@
+{
+  "depth": 0,
+  "width": 60,
+  "height": 60,
+  "creatureDensity": 0.02
+}

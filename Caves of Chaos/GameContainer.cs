@@ -9,6 +9,7 @@ using static Caves_of_Chaos.CreatureScripts.PlayerManager;
 using System.ComponentModel;
 using Caves_of_Chaos.CreatureScripts;
 using SadConsole.Input;
+using System.Diagnostics;
 
 namespace Caves_of_Chaos
 {
@@ -54,7 +55,6 @@ namespace Caves_of_Chaos
                 }
             }
 
-            // Temp:
             infoConsole.Print(1, 0, "Stats:");
             logConsole.Print(0, 1, "Event Log:");
 
@@ -75,7 +75,7 @@ namespace Caves_of_Chaos
         public override bool ProcessKeyboard(Keyboard keyboard)
         {
             PlayerManager.HandleInput(keyboard);
-
+            
             return true;
         }
 
@@ -105,17 +105,35 @@ namespace Caves_of_Chaos
             {
                 for (int j = topMargin; j < topMargin + GRID_CONSOLE_HEIGHT; j++)
                 {
-                    if (activeGrid.tiles[i, j].occupant != null)
+                    if (activeGrid.GetTile(new Point(i, j)).isSeen)
                     {
-                        gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, activeGrid.tiles[i, j].occupant.glyph);
-                    }
-                    else if (activeGrid.tiles[i, j].isWall)
+                        if (activeGrid.tiles[i, j].occupant != null)
+                        {
+                            gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, activeGrid.tiles[i, j].occupant.glyph);
+                        }
+                        else if (activeGrid.tiles[i, j].isWall)
+                        {
+                            gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.white, Palette.black, '#'));
+                        }
+                        else
+                        {
+                            gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.white, Palette.black, '.'));
+                        }
+                    } 
+                    else if (activeGrid.GetTile(new Point(i, j)).wasSeen)
                     {
-                        gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.white, Palette.black, '#'));
+                        if (activeGrid.tiles[i, j].isWall)
+                        {
+                            gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.lightGray, Palette.black, '#'));
+                        }
+                        else
+                        {
+                            gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.lightGray, Palette.black, '.'));
+                        }
                     }
                     else
                     {
-                        gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.white, Palette.black, '.'));
+                        gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.black));
                     }
                 }
             }

@@ -2,9 +2,12 @@
   "name": "giant rat",
   "symbol": "R",
   "color": "brown",
+  "minDepth": 0,
+  "maxDepth": 3,
+  "spawnRatio": 1,
   "health": 10,
   "strength": 4,
   "tags": ["AGGRESSIVE"],
   "resistances": ["bludgeoning"],
-  "resistanceStrengths": [2]
+  "resistanceStrengths": [1]
 }

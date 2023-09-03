@@ -16,6 +16,9 @@ namespace Caves_of_Chaos.GridScripts
 
         public Creature? occupant;
 
+        public bool isSeen = false;
+        public bool wasSeen = false;
+
         public Tile(int x, int y)
         {
             this.x = x;

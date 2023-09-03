@@ -17,13 +17,19 @@ namespace Caves_of_Chaos.GridScripts
         // Default tile (used to block movement off edge of map):
         public Tile defaultTile = new Tile(-1,-1);
 
-        public readonly int width = 0;
-        public readonly int height = 0;
+        public List<Creature> creatures = new List<Creature>();
 
-        public Grid(int width, int height)
+        public readonly int depth;
+        public readonly int width;
+        public readonly int height;
+        public readonly double creatureDensity;
+
+        public Grid(GridTemplate template)
         {
-            this.width = width;
-            this.height = height;
+            depth = template.depth;
+            width = template.width;
+            height = template.height;
+            creatureDensity = template.creatureDensity;
 
             tiles = new Tile[width, height];
 
@@ -34,6 +40,12 @@ namespace Caves_of_Chaos.GridScripts
                     tiles[i, j] = new Tile(i, j);
                 }
             }
+        }
+
+        public void Init()
+        {
+            GenerateWalker();
+            SpawnCreatures();
         }
 
         public Tile GetTile(Point position)
@@ -48,6 +60,7 @@ namespace Caves_of_Chaos.GridScripts
 
         public void SpawnCreatures()
         {
+            // Load creature raws:
             String[] raws = Directory.GetFiles(Directory.GetCurrentDirectory() + "/Creatures");
             List<CreatureTemplate> templates = new List<CreatureTemplate>();
             for (int i = 0; i < raws.Length; i++)
@@ -59,23 +72,47 @@ namespace Caves_of_Chaos.GridScripts
                     System.Diagnostics.Debug.WriteLine("Invalid creature template");
                     continue;
                 }
+                if (template.minDepth > depth || template.maxDepth < depth)
+                {
+                    continue;
+                }
                 templates.Add(template);
             }
 
+            // Prepare for deciding to spawn creatures
+            double totalSpawnRatio = 0.0;
             for (int i = 0; i < templates.Count; i++)
             {
-                Creature creature = new Creature(Utility.RandomPoint(),
-                    templates[i]);
-                while (GetTile(creature.GetPosition()).isWall == true)
+                totalSpawnRatio += templates[i].spawnRatio;
+            }
+
+            // For every tile, maybe spawn creature:
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
                 {
-                    creature.MoveTo(Utility.RandomPoint());
+                    if (!GetTile(new Point(i, j)).isWall && Program.random.NextDouble() < creatureDensity) {
+                        double randomIndex = Program.random.NextDouble() * totalSpawnRatio;
+                        int chosenIndex = 0;
+                        for (int k = 0; k < templates.Count; k++)
+                        {
+                            randomIndex -= templates[k].spawnRatio;
+                            if (randomIndex < 0)
+                            {
+                                chosenIndex = k;
+                                break;
+                            }
+                        }
+                        Creature creature = new Creature(new Point(i, j), this, templates[chosenIndex]);
+                        creatures.Add(creature);
+                    }
                 }
             }
         }
 
         public void GenerateWalker()
         {
-            // Mapgen using a random walker method. Somewhat good-looking caves.
+            // Mapgen using a random walker method. Mediocre caves.
             // Starts at least one spot away from borders.
             Point walker = new Point(Program.random.Next(width - 2) + 1, Program.random.Next(height - 2) + 1);
             GetTile(walker).isWall = false;
