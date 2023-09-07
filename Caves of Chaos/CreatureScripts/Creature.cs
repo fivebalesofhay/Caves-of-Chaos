@@ -26,7 +26,7 @@ namespace Caves_of_Chaos.CreatureScripts
         public String[] tags;
         public Dictionary<String, int> resistances;
 
-        public double health;
+        public int health;
 
         public Creature(Point initialPosition, Grid grid, CreatureTemplate template) 
         { 
@@ -78,12 +78,12 @@ namespace Caves_of_Chaos.CreatureScripts
 
         public void Attack(Creature creature)
         {
-            double damage = baseAttackStrength * Math.Pow(2, -creature.GetResistance("bludgeoning"));
+            int damage = Utility.randRoundInt(baseAttackStrength * Math.Pow(2, -creature.GetResistance("bludgeoning")));
             LogConsole.UpdateLog(name + " attacks " + creature.name + " for " + damage + " damage!");
             creature.Damage(damage);
         }
 
-        public void Damage(double amount)
+        public void Damage(int amount)
         {
             health -= amount;
             if (health <= 0)

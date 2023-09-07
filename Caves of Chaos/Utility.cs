@@ -61,5 +61,16 @@ namespace Caves_of_Chaos
             }
             return points;
         }
+
+        public static int randRoundInt(double n)
+        {
+            if (Program.random.NextDouble() < n - Math.Floor(n))
+            {
+                return (int)Math.Floor(n);
+            } else
+            {
+                return (int)Math.Ceiling(n);
+            }
+        }
     }
 }

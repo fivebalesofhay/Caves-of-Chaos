@@ -29,6 +29,8 @@ namespace Caves_of_Chaos
             var font = Game.Instance.LoadFont("Cheepicus12.font");
             Game.Instance.DefaultFont = font;
 
+            Settings.WindowTitle = "Caves of Chaos";
+
             // Fill Palette dictionary:
             Palette.Init();
 
