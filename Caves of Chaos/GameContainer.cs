@@ -110,6 +110,9 @@ namespace Caves_of_Chaos
                         if (activeGrid.tiles[i, j].occupant != null)
                         {
                             gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, activeGrid.tiles[i, j].occupant.glyph);
+                        } else if (activeGrid.tiles[i, j].structure != null)
+                        {
+                            gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, activeGrid.tiles[i, j].structure.glyph);
                         }
                         else if (activeGrid.tiles[i, j].isWall)
                         {

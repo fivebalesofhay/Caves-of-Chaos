@@ -70,20 +70,40 @@ namespace Caves_of_Chaos.CreatureScripts
             else if (keyboard.IsKeyPressed(Keys.NumPad1))
             {
                 player.Move(new Point(-1, 1));
-            } 
-            else if (keyboard.IsKeyPressed(Keys.OemPeriod))
+            }
+            else if (keyboard.IsKeyPressed(Keys.OemPeriod) && activeGrid.GetTile(player.GetPosition()).structure != null)
             {
-                activeGrid = grids[activeGrid.depth + 1];
-                
-                Point point = Utility.RandomPoint();
-
-                while (activeGrid.GetTile(point).isWall == true
-                    || activeGrid.GetTile(point).occupant != null)
+                if (activeGrid.GetTile(player.GetPosition()).structure.name == "Down Stair")
                 {
-                    point = Utility.RandomPoint();
-                }
+                    activeGrid = grids[activeGrid.depth + 1];
 
-                player.MoveTo(point);
+                    Point point = Utility.RandomPoint();
+
+                    while (activeGrid.GetTile(point).isWall == true
+                        || activeGrid.GetTile(point).occupant != null)
+                    {
+                        point = Utility.RandomPoint();
+                    }
+
+                    player.MoveTo(point);
+                }
+            }
+            else if (keyboard.IsKeyPressed(Keys.OemComma) && activeGrid.GetTile(player.GetPosition()).structure != null)
+            {
+                if (activeGrid.GetTile(player.GetPosition()).structure.name == "Up Stair")
+                {
+                    activeGrid = grids[activeGrid.depth - 1];
+
+                    Point point = Utility.RandomPoint();
+
+                    while (activeGrid.GetTile(point).isWall == true
+                        || activeGrid.GetTile(point).occupant != null)
+                    {
+                        point = Utility.RandomPoint();
+                    }
+
+                    player.MoveTo(point);
+                }
             }
 
             // Field of View:

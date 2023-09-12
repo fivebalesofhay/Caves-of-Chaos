@@ -1,4 +1,5 @@
 ﻿using Caves_of_Chaos.CreatureScripts;
+using Caves_of_Chaos.StructureScripts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace Caves_of_Chaos.GridScripts
         public bool isWall = true;
 
         public Creature? occupant;
+        public Structure? structure;
 
         public bool isSeen = false;
         public bool wasSeen = false;

@@ -1,0 +1,7 @@
+{
+  "name": "Down Stair",
+  "symbol": ">",
+  "color": "white",
+  "minDepth": 0,
+  "maxDepth": 0
+}

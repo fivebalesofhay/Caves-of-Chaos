@@ -7,6 +7,7 @@ using static GameSettings;
 using Caves_of_Chaos.CreatureScripts;
 using System.Text.Json;
 using System.Collections;
+using Caves_of_Chaos.StructureScripts;
 
 namespace Caves_of_Chaos.GridScripts
 {
@@ -45,6 +46,7 @@ namespace Caves_of_Chaos.GridScripts
         public void Init()
         {
             GenerateWalker();
+            GenerateStructures();
             SpawnCreatures();
         }
 
@@ -56,6 +58,40 @@ namespace Caves_of_Chaos.GridScripts
             }
 
             return tiles[position.X, position.Y];
+        }
+
+        public void GenerateStructures()
+        {
+            // Load structure raws:
+            String[] raws = Directory.GetFiles(Directory.GetCurrentDirectory() + "/Structures");
+            List<StructureTemplate> templates = new List<StructureTemplate>();
+            for (int i = 0; i < raws.Length; i++)
+            {
+                String text = File.ReadAllText(raws[i]);
+                StructureTemplate? template = JsonSerializer.Deserialize<StructureTemplate>(text);
+                if (template == null)
+                {
+                    System.Diagnostics.Debug.WriteLine("Invalid structure template");
+                    continue;
+                }
+                if (template.minDepth > depth || template.maxDepth < depth)
+                {
+                    continue;
+                }
+                templates.Add(template);
+            }
+
+            for (int i = 0; i < 50; i++)
+            {
+                Point point = new Point(Program.random.Next(width), Program.random.Next(height));
+
+                while (GetTile(point).isWall == true
+                    || GetTile(point).occupant != null)
+                {
+                    point = new Point(Program.random.Next(width), Program.random.Next(height));
+                }
+                GetTile(point).structure = new Structure(templates[0]);
+            }
         }
 
         public void SpawnCreatures()
