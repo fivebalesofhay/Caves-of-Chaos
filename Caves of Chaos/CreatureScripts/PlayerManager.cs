@@ -42,34 +42,42 @@ namespace Caves_of_Chaos.CreatureScripts
             if (keyboard.IsKeyPressed(Keys.Up) || keyboard.IsKeyPressed(Keys.NumPad8))
             {
                 player.Move(new Point(0, -1));
+                player.actionPoints -= 10;
             }
             else if (keyboard.IsKeyPressed(Keys.Down) || keyboard.IsKeyPressed(Keys.NumPad2))
             {
                 player.Move(new Point(0, 1));
+                player.actionPoints -= 10;
             }
             else if (keyboard.IsKeyPressed(Keys.Left) || keyboard.IsKeyPressed(Keys.NumPad4))
             {
                 player.Move(new Point(-1, 0));
+                player.actionPoints -= 10;
             }
             else if (keyboard.IsKeyPressed(Keys.Right) || keyboard.IsKeyPressed(Keys.NumPad6))
             {
                 player.Move(new Point(1, 0));
+                player.actionPoints -= 10;
             }
             else if (keyboard.IsKeyPressed(Keys.NumPad7))
             {
                 player.Move(new Point(-1, -1));
+                player.actionPoints -= 10;
             }
             else if (keyboard.IsKeyPressed(Keys.NumPad9))
             {
                 player.Move(new Point(1, -1));
+                player.actionPoints -= 10;
             }
             else if (keyboard.IsKeyPressed(Keys.NumPad3))
             {
                 player.Move(new Point(1, 1));
+                player.actionPoints -= 10;
             }
             else if (keyboard.IsKeyPressed(Keys.NumPad1))
             {
                 player.Move(new Point(-1, 1));
+                player.actionPoints -= 10;
             }
             else if (keyboard.IsKeyPressed(Keys.OemPeriod) && activeGrid.GetTile(player.GetPosition()).structure != null)
             {

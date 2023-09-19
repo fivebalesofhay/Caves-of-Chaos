@@ -140,7 +140,6 @@ namespace Caves_of_Chaos.GridScripts
                             }
                         }
                         Creature creature = new Creature(new Point(i, j), this, templates[chosenIndex]);
-                        creatures.Add(creature);
                     }
                 }
             }

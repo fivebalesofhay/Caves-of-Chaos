@@ -4,10 +4,10 @@
   "color": "brown",
   "minDepth": 0,
   "maxDepth": 3,
-  "spawnRatio": 1,
+  "spawnRatio": 100,
   "health": 10,
   "strength": 4,
-  "tags": ["AGGRESSIVE"],
+  "tags": ["AGRESSIVE"],
   "resistances": ["bludgeoning"],
   "resistanceStrengths": [1]
 }

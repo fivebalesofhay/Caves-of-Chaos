@@ -27,6 +27,7 @@ namespace Caves_of_Chaos.CreatureScripts
         public Dictionary<String, int> resistances;
 
         public int health;
+        public double actionPoints = 0;
 
         public Creature(Point initialPosition, Grid grid, CreatureTemplate template) 
         { 
@@ -51,6 +52,36 @@ namespace Caves_of_Chaos.CreatureScripts
             grid.tiles[position.X, position.Y].occupant = this;
             grid.creatures.Add(this);
             health = maxHealth;
+        }
+
+        // return action point cost of action
+        public double Act()
+        {
+            // Simplest possible brain. Replace later with something better
+            if (hasTag("AGRESSIVE"))
+            {
+                if (activeGrid.GetTile(position).isSeen)
+                {
+                    Point playerDiff = PlayerManager.player.GetPosition() - position;
+                    if (Program.random.NextDouble() < Math.Abs(playerDiff.X/Utility.Distance(new Point(0,0), playerDiff)))
+                    {
+                        Move(new Point(Math.Sign(playerDiff.X), 0));
+                        return 10; // Change this
+                    } else
+                    {
+                        Move(new Point(0, Math.Sign(playerDiff.Y)));
+                        return 10; // Change this
+                    }
+                } else
+                {
+                    Move(Utility.RandomDirection());
+                    return 10; // Change this
+                }
+            } else
+            {
+                Move(Utility.RandomDirection());
+                return 10; // Change this
+            }
         }
 
         public void Move(Point direction)
@@ -110,6 +141,11 @@ namespace Caves_of_Chaos.CreatureScripts
         public Point GetPosition()
         {
             return position;
+        }
+
+        public Boolean hasTag(String tag)
+        {
+            return tags.Contains(tag);
         }
     }
 }

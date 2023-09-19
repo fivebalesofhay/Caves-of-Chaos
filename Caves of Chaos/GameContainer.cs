@@ -68,7 +68,10 @@ namespace Caves_of_Chaos
             base.Update(delta);
 
             // Main game loop:
-
+            while (player.actionPoints < 0)
+            {
+                CreatureManager.UpdateCreatures();
+            }
             DrawGrid();
         }
 
