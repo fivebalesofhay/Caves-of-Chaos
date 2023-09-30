@@ -11,4 +11,7 @@
 
     // Player settings:
     public const int PLAYER_FOV_DISTANCE = 8;
+
+    // Creature settings:
+    public const double BASE_MOVEMENT_TIME = 10;
 }

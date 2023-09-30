@@ -7,6 +7,8 @@
   "spawnRatio": 3,
   "health": 1,
   "strength": 1,
+  "movementSpeed": 2,
+  "actionSpeed": 1,
   "tags": [],
   "resistances": [],
   "resistanceStrengths": []

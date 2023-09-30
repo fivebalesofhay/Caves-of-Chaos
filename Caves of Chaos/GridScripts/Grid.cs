@@ -81,16 +81,44 @@ namespace Caves_of_Chaos.GridScripts
                 templates.Add(template);
             }
 
-            for (int i = 0; i < 50; i++)
+            // Prepare for deciding to create structures, create minimum number of structures
+            double totalSpawnRatio = 0.0;
+            for (int i = 0; i < templates.Count; i++)
             {
-                Point point = new Point(Program.random.Next(width), Program.random.Next(height));
+                totalSpawnRatio += templates[i].spawnRatio;
 
-                while (GetTile(point).isWall == true
-                    || GetTile(point).occupant != null)
+                for (int j = 0; j < templates[i].minNumber; j++)
                 {
-                    point = new Point(Program.random.Next(width), Program.random.Next(height));
+                    Point point = new Point(Program.random.Next(width), Program.random.Next(height));
+                    while (tiles[point.X, point.Y].structure != null || tiles[point.X, point.Y].isWall)
+                    {
+                        point = new Point(Program.random.Next(width), Program.random.Next(height));
+                    }
+                    Structure structure = new Structure(point, this, templates[i]);
                 }
-                GetTile(point).structure = new Structure(templates[0]);
+            }
+
+            // For every tile, maybe create structure:
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    if (!GetTile(new Point(i, j)).isWall && Program.random.NextDouble() < 0.1) // Reminder: add structureDensity
+                    {
+                        double randomIndex = Program.random.NextDouble() * totalSpawnRatio;
+                        int chosenIndex = 0;
+                        for (int k = 0; k < templates.Count; k++)
+                        {
+                            randomIndex -= templates[k].spawnRatio;
+                            if (randomIndex < 0)
+                            {
+                                chosenIndex = k;
+                                break;
+                            }
+                        }
+                        Structure structure = new Structure(new Point(i, j), this, templates[chosenIndex]);
+                    }
+                }
             }
         }
 

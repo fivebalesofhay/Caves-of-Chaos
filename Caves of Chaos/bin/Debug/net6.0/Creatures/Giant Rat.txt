@@ -7,6 +7,8 @@
   "spawnRatio": 100,
   "health": 10,
   "strength": 4,
+  "movementSpeed": 1,
+  "actionSpeed": 1,
   "tags": ["AGRESSIVE"],
   "resistances": ["bludgeoning"],
   "resistanceStrengths": [1]

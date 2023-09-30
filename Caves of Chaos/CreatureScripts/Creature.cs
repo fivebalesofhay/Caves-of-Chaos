@@ -23,6 +23,8 @@ namespace Caves_of_Chaos.CreatureScripts
         public double spawnRatio;
         public int maxHealth;
         public double baseAttackStrength;
+        public double movementSpeed;
+        public double actionSpeed;
         public String[] tags;
         public Dictionary<String, int> resistances;
 
@@ -32,13 +34,15 @@ namespace Caves_of_Chaos.CreatureScripts
         public Creature(Point initialPosition, Grid grid, CreatureTemplate template) 
         { 
             position = initialPosition;
-            this.glyph = new ColoredGlyph(Palette.colors[template.color], Palette.black, template.symbol.ToCharArray()[0]);
+            glyph = new ColoredGlyph(Palette.colors[template.color], Palette.black, template.symbol.ToCharArray()[0]);
 
-            this.name = template.name;
-            this.maxHealth = template.health;
-            this.baseAttackStrength = template.strength;
-            this.tags = template.tags;
-            this.resistances = new Dictionary<string, int>();
+            name = template.name;
+            maxHealth = template.health;
+            baseAttackStrength = template.strength;
+            movementSpeed = template.movementSpeed; 
+            actionSpeed = template.actionSpeed;
+            tags = template.tags;
+            resistances = new Dictionary<string, int>();
             
             if (template.resistances != null)
             {
@@ -58,7 +62,7 @@ namespace Caves_of_Chaos.CreatureScripts
         public double Act()
         {
             // Simplest possible brain. Replace later with something better
-            if (hasTag("AGRESSIVE"))
+            if (HasTag("AGRESSIVE"))
             {
                 if (activeGrid.GetTile(position).isSeen)
                 {
@@ -66,26 +70,27 @@ namespace Caves_of_Chaos.CreatureScripts
                     if (Program.random.NextDouble() < Math.Abs(playerDiff.X/Utility.Distance(new Point(0,0), playerDiff)))
                     {
                         Move(new Point(Math.Sign(playerDiff.X), 0));
-                        return 10; // Change this
+                        return GetMovementTime();
                     } else
                     {
                         Move(new Point(0, Math.Sign(playerDiff.Y)));
-                        return 10; // Change this
+                        return GetMovementTime();
                     }
                 } else
                 {
                     Move(Utility.RandomDirection());
-                    return 10; // Change this
+                    return GetMovementTime();
                 }
             } else
             {
                 Move(Utility.RandomDirection());
-                return 10; // Change this
+                return GetMovementTime();
             }
         }
 
         public void Move(Point direction)
         {
+            if (direction == new Point(0, 0)) return;
             Point newPosition = position + direction;
             if (activeGrid.GetTile(newPosition).isWall) { return; }
             if (activeGrid.GetTile(newPosition).occupant != null)
@@ -143,7 +148,12 @@ namespace Caves_of_Chaos.CreatureScripts
             return position;
         }
 
-        public Boolean hasTag(String tag)
+        public double GetMovementTime()
+        {
+            return GameSettings.BASE_MOVEMENT_TIME / movementSpeed / actionSpeed;
+        }
+
+        public Boolean HasTag(String tag)
         {
             return tags.Contains(tag);
         }

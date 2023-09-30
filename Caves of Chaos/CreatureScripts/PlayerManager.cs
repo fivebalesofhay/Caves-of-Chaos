@@ -22,8 +22,10 @@ namespace Caves_of_Chaos.CreatureScripts
             playerTemplate.name = "Player";
             playerTemplate.symbol = "@";
             playerTemplate.color = "white";
-            playerTemplate.health = 100;
+            playerTemplate.health = 10000;
             playerTemplate.strength = 5;
+            playerTemplate.movementSpeed = 1;
+            playerTemplate.actionSpeed = 1;
             playerTemplate.tags = new String[0];
 
             Point point = Utility.RandomPoint();
@@ -42,47 +44,49 @@ namespace Caves_of_Chaos.CreatureScripts
             if (keyboard.IsKeyPressed(Keys.Up) || keyboard.IsKeyPressed(Keys.NumPad8))
             {
                 player.Move(new Point(0, -1));
-                player.actionPoints -= 10;
+                player.actionPoints -= player.GetMovementTime();
             }
             else if (keyboard.IsKeyPressed(Keys.Down) || keyboard.IsKeyPressed(Keys.NumPad2))
             {
                 player.Move(new Point(0, 1));
-                player.actionPoints -= 10;
+                player.actionPoints -= player.GetMovementTime();
             }
             else if (keyboard.IsKeyPressed(Keys.Left) || keyboard.IsKeyPressed(Keys.NumPad4))
             {
                 player.Move(new Point(-1, 0));
-                player.actionPoints -= 10;
+                player.actionPoints -= player.GetMovementTime();
             }
             else if (keyboard.IsKeyPressed(Keys.Right) || keyboard.IsKeyPressed(Keys.NumPad6))
             {
                 player.Move(new Point(1, 0));
-                player.actionPoints -= 10;
+                player.actionPoints -= player.GetMovementTime();
             }
             else if (keyboard.IsKeyPressed(Keys.NumPad7))
             {
                 player.Move(new Point(-1, -1));
-                player.actionPoints -= 10;
+                player.actionPoints -= player.GetMovementTime();
             }
             else if (keyboard.IsKeyPressed(Keys.NumPad9))
             {
                 player.Move(new Point(1, -1));
-                player.actionPoints -= 10;
+                player.actionPoints -= player.GetMovementTime();
             }
             else if (keyboard.IsKeyPressed(Keys.NumPad3))
             {
                 player.Move(new Point(1, 1));
-                player.actionPoints -= 10;
+                player.actionPoints -= player.GetMovementTime();
             }
             else if (keyboard.IsKeyPressed(Keys.NumPad1))
             {
                 player.Move(new Point(-1, 1));
-                player.actionPoints -= 10;
+                player.actionPoints -= player.GetMovementTime();
             }
             else if (keyboard.IsKeyPressed(Keys.OemPeriod) && activeGrid.GetTile(player.GetPosition()).structure != null)
             {
                 if (activeGrid.GetTile(player.GetPosition()).structure.name == "Down Stair")
                 {
+                    activeGrid.GetTile(player.GetPosition()).occupant = null;
+                    activeGrid.creatures.Remove(player);
                     activeGrid = grids[activeGrid.depth + 1];
 
                     Point point = Utility.RandomPoint();
@@ -94,12 +98,16 @@ namespace Caves_of_Chaos.CreatureScripts
                     }
 
                     player.MoveTo(point);
+                    activeGrid.GetTile(player.GetPosition()).occupant = player;
+                    activeGrid.creatures.Add(player);
                 }
             }
             else if (keyboard.IsKeyPressed(Keys.OemComma) && activeGrid.GetTile(player.GetPosition()).structure != null)
             {
                 if (activeGrid.GetTile(player.GetPosition()).structure.name == "Up Stair")
                 {
+                    activeGrid.GetTile(player.GetPosition()).occupant = null;
+                    activeGrid.creatures.Remove(player);
                     activeGrid = grids[activeGrid.depth - 1];
 
                     Point point = Utility.RandomPoint();
@@ -111,6 +119,8 @@ namespace Caves_of_Chaos.CreatureScripts
                     }
 
                     player.MoveTo(point);
+                    activeGrid.GetTile(player.GetPosition()).occupant = player;
+                    activeGrid.creatures.Add(player);
                 }
             }
 
