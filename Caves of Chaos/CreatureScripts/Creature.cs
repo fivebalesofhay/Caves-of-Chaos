@@ -67,40 +67,42 @@ namespace Caves_of_Chaos.CreatureScripts
                 if (activeGrid.GetTile(position).isSeen)
                 {
                     Point playerDiff = PlayerManager.player.GetPosition() - position;
+                    if (Math.Abs(playerDiff.X) == Math.Abs(playerDiff.Y))
+                    {
+                        return Move(new Point(Math.Sign(playerDiff.X), Math.Sign(playerDiff.Y)));
+                    }
                     if (Program.random.NextDouble() < Math.Abs(playerDiff.X/Utility.Distance(new Point(0,0), playerDiff)))
                     {
-                        Move(new Point(Math.Sign(playerDiff.X), 0));
-                        return GetMovementTime();
-                    } else
+                        return Move(new Point(Math.Sign(playerDiff.X), 0));
+                    }
+                    else
                     {
-                        Move(new Point(0, Math.Sign(playerDiff.Y)));
-                        return GetMovementTime();
+                        return Move(new Point(0, Math.Sign(playerDiff.Y)));
                     }
                 } else
                 {
-                    Move(Utility.RandomDirection());
-                    return GetMovementTime();
+                    return Move(Utility.RandomDirection());
                 }
             } else
             {
-                Move(Utility.RandomDirection());
-                return GetMovementTime();
+                return Move(Utility.RandomDirection());
             }
         }
 
-        public void Move(Point direction)
+        public double Move(Point direction)
         {
-            if (direction == new Point(0, 0)) return;
+            if (direction == new Point(0, 0)) return 0;
             Point newPosition = position + direction;
-            if (activeGrid.GetTile(newPosition).isWall) { return; }
+            if (activeGrid.GetTile(newPosition).isWall) { return 0; }
             if (activeGrid.GetTile(newPosition).occupant != null)
             {
                 Attack(activeGrid.GetTile(newPosition).occupant);
-                return;
+                return GetMovementTime();
             }
             activeGrid.GetTile(position).occupant = null;
             position = newPosition;
             activeGrid.GetTile(position).occupant = this;
+            return GetMovementTime();
         }
         
         public void MoveTo(Point location)

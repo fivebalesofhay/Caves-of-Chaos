@@ -22,7 +22,7 @@ namespace Caves_of_Chaos.CreatureScripts
             playerTemplate.name = "Player";
             playerTemplate.symbol = "@";
             playerTemplate.color = "white";
-            playerTemplate.health = 10000;
+            playerTemplate.health = 100;
             playerTemplate.strength = 5;
             playerTemplate.movementSpeed = 1;
             playerTemplate.actionSpeed = 1;
@@ -43,43 +43,39 @@ namespace Caves_of_Chaos.CreatureScripts
         {
             if (keyboard.IsKeyPressed(Keys.Up) || keyboard.IsKeyPressed(Keys.NumPad8))
             {
-                player.Move(new Point(0, -1));
-                player.actionPoints -= player.GetMovementTime();
+                player.actionPoints -= player.Move(new Point(0, -1));
             }
             else if (keyboard.IsKeyPressed(Keys.Down) || keyboard.IsKeyPressed(Keys.NumPad2))
             {
-                player.Move(new Point(0, 1));
-                player.actionPoints -= player.GetMovementTime();
+                player.actionPoints -= player.Move(new Point(0, 1));
             }
             else if (keyboard.IsKeyPressed(Keys.Left) || keyboard.IsKeyPressed(Keys.NumPad4))
             {
-                player.Move(new Point(-1, 0));
-                player.actionPoints -= player.GetMovementTime();
+                player.actionPoints -= player.Move(new Point(-1, 0));
             }
             else if (keyboard.IsKeyPressed(Keys.Right) || keyboard.IsKeyPressed(Keys.NumPad6))
             {
-                player.Move(new Point(1, 0));
-                player.actionPoints -= player.GetMovementTime();
+                player.actionPoints -= player.Move(new Point(1, 0));
             }
             else if (keyboard.IsKeyPressed(Keys.NumPad7))
             {
-                player.Move(new Point(-1, -1));
-                player.actionPoints -= player.GetMovementTime();
+                player.actionPoints -= player.Move(new Point(-1, -1));
             }
             else if (keyboard.IsKeyPressed(Keys.NumPad9))
             {
-                player.Move(new Point(1, -1));
-                player.actionPoints -= player.GetMovementTime();
+                player.actionPoints -= player.Move(new Point(1, -1));
             }
             else if (keyboard.IsKeyPressed(Keys.NumPad3))
             {
-                player.Move(new Point(1, 1));
-                player.actionPoints -= player.GetMovementTime();
+                player.actionPoints -= player.Move(new Point(1, 1));
             }
             else if (keyboard.IsKeyPressed(Keys.NumPad1))
             {
-                player.Move(new Point(-1, 1));
-                player.actionPoints -= player.GetMovementTime();
+                player.actionPoints -= player.Move(new Point(-1, 1));
+            }
+            else if (keyboard.IsKeyPressed(Keys.NumPad5))
+            {
+                player.actionPoints -= Math.Min(10, player.GetMovementTime());
             }
             else if (keyboard.IsKeyPressed(Keys.OemPeriod) && activeGrid.GetTile(player.GetPosition()).structure != null)
             {

@@ -4,7 +4,7 @@
   "color": "lightGreen",
   "backgroundColor": "green",
   "minDepth": 0,
-  "maxDepth": 1,
+  "maxDepth": 0,
   "spawnRatio": 1,
   "minNumber": 0
 }

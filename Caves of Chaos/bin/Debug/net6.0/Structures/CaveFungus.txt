@@ -1,0 +1,10 @@
+{
+  "name": "Cave Fungus",
+  "symbol": ".",
+  "color": "lightBlue",
+  "backgroundColor": "darkBlue",
+  "minDepth": 1,
+  "maxDepth": 1,
+  "spawnRatio": 1,
+  "minNumber": 0
+}

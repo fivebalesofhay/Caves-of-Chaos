@@ -1,5 +1,6 @@
 ﻿using Caves_of_Chaos.GridScripts;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,28 @@ namespace Caves_of_Chaos.StructureScripts
             position = initialPosition;
 
             grid.tiles[position.X, position.Y].structure = this;
+
+            if (name == "Cave Moss")
+            {
+                Grow(20, grid);
+            }
+            if (name == "Cave Fungus")
+            {
+                Grow(10, grid);
+            }
+        }
+
+        private void Grow(int steps, Grid grid)
+        {
+            List<Point> points = new List<Point> { position };
+            for (int i = 0; i < steps; i++)
+            {
+                Point pos = points[Program.random.Next(points.Count)];
+                Point dir = Utility.RandomDirection();
+                if (grid.GetTile(pos + dir).isWall || grid.GetTile(pos + dir).structure != null) continue;
+                grid.GetTile(pos + dir).structure = this;
+                points.Add(pos + dir);
+            }
         }
     }
 }

@@ -24,6 +24,7 @@ namespace Caves_of_Chaos.GridScripts
         public readonly int width;
         public readonly int height;
         public readonly double creatureDensity;
+        public readonly double structureDensity;
 
         public Grid(GridTemplate template)
         {
@@ -31,6 +32,7 @@ namespace Caves_of_Chaos.GridScripts
             width = template.width;
             height = template.height;
             creatureDensity = template.creatureDensity;
+            structureDensity = template.structureDensity;
 
             tiles = new Tile[width, height];
 
@@ -103,7 +105,7 @@ namespace Caves_of_Chaos.GridScripts
             {
                 for (int j = 0; j < height; j++)
                 {
-                    if (!GetTile(new Point(i, j)).isWall && Program.random.NextDouble() < 0.1) // Reminder: add structureDensity
+                    if (!GetTile(new Point(i, j)).isWall && Program.random.NextDouble() < structureDensity)
                     {
                         double randomIndex = Program.random.NextDouble() * totalSpawnRatio;
                         int chosenIndex = 0;
