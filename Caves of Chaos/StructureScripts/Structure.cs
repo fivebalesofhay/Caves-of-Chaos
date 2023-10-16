@@ -21,7 +21,15 @@ namespace Caves_of_Chaos.StructureScripts
             {
                 template.backgroundColor = "black";
             }
-            glyph = new ColoredGlyph(Palette.colors[template.color], Palette.colors[template.backgroundColor], template.symbol.ToCharArray()[0]);
+            if (template.symbolIndex != null)
+            {
+                glyph = new ColoredGlyph(Palette.colors[template.color], Palette.colors[template.backgroundColor], 
+                    (int)template.symbolIndex);
+            } else
+            {
+                glyph = new ColoredGlyph(Palette.colors[template.color], Palette.colors[template.backgroundColor], 
+                    template.symbol.ToCharArray()[0]);
+            }
             name = template.name;
             position = initialPosition;
 

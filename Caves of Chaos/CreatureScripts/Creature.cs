@@ -29,6 +29,7 @@ namespace Caves_of_Chaos.CreatureScripts
         public Dictionary<String, int> resistances;
 
         public int health;
+        public double healingOffset = 0;
         public double actionPoints = 0;
 
         public Creature(Point initialPosition, Grid grid, CreatureTemplate template) 
@@ -58,6 +59,19 @@ namespace Caves_of_Chaos.CreatureScripts
             health = maxHealth;
         }
 
+        public void Update()
+        {
+            if (health < maxHealth)
+            {
+                healingOffset += maxHealth * GameSettings.BASE_HEALING_RATE;
+            }
+            while (healingOffset >= 1)
+            {
+                health++;
+                healingOffset--;
+            }
+        }
+
         // return action point cost of action
         public double Act()
         {
@@ -69,14 +83,17 @@ namespace Caves_of_Chaos.CreatureScripts
                     Point playerDiff = PlayerManager.player.GetPosition() - position;
                     if (Math.Abs(playerDiff.X) == Math.Abs(playerDiff.Y))
                     {
+                        System.Diagnostics.Debug.WriteLine("Diagonal");
                         return Move(new Point(Math.Sign(playerDiff.X), Math.Sign(playerDiff.Y)));
                     }
-                    if (Program.random.NextDouble() < Math.Abs(playerDiff.X/Utility.Distance(new Point(0,0), playerDiff)))
+                    else if (Program.random.NextDouble() < Math.Abs(playerDiff.X/Utility.Distance(new Point(0,0), playerDiff)))
                     {
+                        System.Diagnostics.Debug.WriteLine("X");
                         return Move(new Point(Math.Sign(playerDiff.X), 0));
                     }
                     else
                     {
+                        System.Diagnostics.Debug.WriteLine("Y");
                         return Move(new Point(0, Math.Sign(playerDiff.Y)));
                     }
                 } else

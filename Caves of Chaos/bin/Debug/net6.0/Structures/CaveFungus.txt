@@ -1,8 +1,8 @@
 {
   "name": "Cave Fungus",
-  "symbol": ".",
+  "symbol": "",
+  "symbolIndex": 250,
   "color": "lightBlue",
-  "backgroundColor": "darkBlue",
   "minDepth": 1,
   "maxDepth": 1,
   "spawnRatio": 1,

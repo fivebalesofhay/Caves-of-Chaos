@@ -15,6 +15,7 @@ namespace Caves_of_Chaos.CreatureScripts
             {
                 Creature creature = activeGrid.creatures[i];
                 creature.actionPoints++;
+                creature.Update();
                 if (creature == PlayerManager.player) continue;
                 if (creature.actionPoints >= 0) {
                     creature.actionPoints -= creature.Act();

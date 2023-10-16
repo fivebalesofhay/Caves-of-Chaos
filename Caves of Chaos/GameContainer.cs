@@ -10,6 +10,7 @@ using System.ComponentModel;
 using Caves_of_Chaos.CreatureScripts;
 using SadConsole.Input;
 using System.Diagnostics;
+using Caves_of_Chaos.UIScripts;
 
 namespace Caves_of_Chaos
 {
@@ -73,6 +74,7 @@ namespace Caves_of_Chaos
                 CreatureManager.UpdateCreatures();
             }
             DrawGrid();
+            InfoConsole.updateStats();
         }
 
         public override bool ProcessKeyboard(Keyboard keyboard)

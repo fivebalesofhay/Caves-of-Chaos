@@ -1,8 +1,8 @@
 {
   "name": "Cave Moss",
-  "symbol": ".",
+  "symbol": "",
+  "symbolIndex": 250,
   "color": "lightGreen",
-  "backgroundColor": "green",
   "minDepth": 0,
   "maxDepth": 0,
   "spawnRatio": 1,
