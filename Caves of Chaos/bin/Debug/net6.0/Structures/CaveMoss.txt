@@ -1,5 +1,5 @@
 {
-  "name": "Cave Moss",
+  "name": "cave moss",
   "symbol": "",
   "symbolIndex": 250,
   "color": "lightGreen",

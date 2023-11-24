@@ -1,5 +1,5 @@
 {
-  "name": "Up Stair",
+  "name": "up stair",
   "symbol": "<",
   "color": "white",
   "minDepth": 1,

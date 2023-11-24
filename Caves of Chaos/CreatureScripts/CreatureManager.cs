@@ -18,6 +18,7 @@ namespace Caves_of_Chaos.CreatureScripts
                 creature.Update();
                 if (creature == PlayerManager.player) continue;
                 if (creature.actionPoints >= 0) {
+                    creature.actionPoints = 0;
                     creature.actionPoints -= creature.Act();
                 }
             }

@@ -1,5 +1,5 @@
 {
-  "name": "Down Stair",
+  "name": "down stair",
   "symbol": ">",
   "color": "white",
   "minDepth": 0,

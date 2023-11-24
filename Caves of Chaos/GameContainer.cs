@@ -79,7 +79,7 @@ namespace Caves_of_Chaos
 
         public override bool ProcessKeyboard(Keyboard keyboard)
         {
-            PlayerManager.HandleInput(keyboard);
+            ModeManager.HandleInput(keyboard);
             
             return true;
         }
@@ -110,12 +110,17 @@ namespace Caves_of_Chaos
             {
                 for (int j = topMargin; j < topMargin + GRID_CONSOLE_HEIGHT; j++)
                 {
-                    if (activeGrid.GetTile(new Point(i, j)).isSeen)
+                    if (ModeManager.mode == ModeManager.modes.Examine && ExamineMode.pos == new Point(i,j))
+                    {
+                        gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.white, Palette.black, 'X'));
+                    }
+                    else if (activeGrid.GetTile(new Point(i, j)).isSeen)
                     {
                         if (activeGrid.tiles[i, j].occupant != null)
                         {
                             gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, activeGrid.tiles[i, j].occupant.glyph);
-                        } else if (activeGrid.tiles[i, j].structure != null)
+                        } 
+                        else if (activeGrid.tiles[i, j].structure != null)
                         {
                             gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, activeGrid.tiles[i, j].structure.glyph);
                         }

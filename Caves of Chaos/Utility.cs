@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Caves_of_Chaos.GridScripts.GridManager;
+using SadConsole.Input;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Caves_of_Chaos
 {
@@ -71,6 +73,11 @@ namespace Caves_of_Chaos
             {
                 return (int)Math.Ceiling(n);
             }
+        }
+
+        public static String Capitalize(String s) 
+        {
+            return s[0].ToString().ToUpper() + s.Substring(1,s.Length-1);
         }
     }
 }

@@ -35,11 +35,11 @@ namespace Caves_of_Chaos.StructureScripts
 
             grid.tiles[position.X, position.Y].structure = this;
 
-            if (name == "Cave Moss")
+            if (name == "cave moss")
             {
                 Grow(20, grid);
             }
-            if (name == "Cave Fungus")
+            if (name == "cave fungus")
             {
                 Grow(10, grid);
             }
