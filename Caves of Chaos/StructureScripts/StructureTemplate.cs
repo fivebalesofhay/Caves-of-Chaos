@@ -18,5 +18,7 @@ namespace Caves_of_Chaos.StructureScripts
         public int maxDepth { get; set; }
         public double spawnRatio { get; set; }
         public int minNumber { get; set; }
+
+        public int? growth { get; set; }
     }
 }

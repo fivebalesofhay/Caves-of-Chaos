@@ -6,5 +6,6 @@
   "minDepth": 1,
   "maxDepth": 1,
   "spawnRatio": 1,
-  "minNumber": 0
+  "minNumber": 0,
+  "growth": 10
 }

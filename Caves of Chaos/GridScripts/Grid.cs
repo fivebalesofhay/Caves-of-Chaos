@@ -126,30 +126,19 @@ namespace Caves_of_Chaos.GridScripts
 
         public void SpawnCreatures()
         {
-            // Load creature raws:
-            String[] raws = Directory.GetFiles(Directory.GetCurrentDirectory() + "/Creatures");
-            List<CreatureTemplate> templates = new List<CreatureTemplate>();
-            for (int i = 0; i < raws.Length; i++)
-            {
-                String text = File.ReadAllText(raws[i]);
-                CreatureTemplate? template = JsonSerializer.Deserialize<CreatureTemplate>(text);
-                if (template == null)
-                {
-                    System.Diagnostics.Debug.WriteLine("Invalid creature template");
-                    continue;
-                }
-                if (template.minDepth > depth || template.maxDepth < depth)
-                {
-                    continue;
-                }
-                templates.Add(template);
-            }
-
             // Prepare for deciding to spawn creatures
-            double totalSpawnRatio = 0.0;
-            for (int i = 0; i < templates.Count; i++)
+            List<CreatureTemplate> levelTemplates = new List<CreatureTemplate>();
+            for (int i = 0; i < CreatureManager.templates.Count; i++)
             {
-                totalSpawnRatio += templates[i].spawnRatio;
+                if (CreatureManager.templates[i].minDepth <= depth && CreatureManager.templates[i].maxDepth >= depth)
+                {
+                    levelTemplates.Add(CreatureManager.templates[i]);
+                }
+            }
+            double totalSpawnRatio = 0.0;
+            for (int i = 0; i < levelTemplates.Count; i++)
+            {
+                totalSpawnRatio += levelTemplates[i].spawnRatio;
             }
 
             // For every tile, maybe spawn creature:
@@ -160,16 +149,16 @@ namespace Caves_of_Chaos.GridScripts
                     if (!GetTile(new Point(i, j)).isWall && Program.random.NextDouble() < creatureDensity) {
                         double randomIndex = Program.random.NextDouble() * totalSpawnRatio;
                         int chosenIndex = 0;
-                        for (int k = 0; k < templates.Count; k++)
+                        for (int k = 0; k < levelTemplates.Count; k++)
                         {
-                            randomIndex -= templates[k].spawnRatio;
+                            randomIndex -= levelTemplates[k].spawnRatio;
                             if (randomIndex < 0)
                             {
                                 chosenIndex = k;
                                 break;
                             }
                         }
-                        Creature creature = new Creature(new Point(i, j), this, templates[chosenIndex]);
+                        Creature creature = new Creature(new Point(i, j), this, levelTemplates[chosenIndex]);
                     }
                 }
             }

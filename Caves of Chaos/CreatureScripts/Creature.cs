@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using static Caves_of_Chaos.GridScripts.GridManager;
+using Caves_of_Chaos.ItemScripts;
 
 namespace Caves_of_Chaos.CreatureScripts
 {
@@ -31,6 +32,8 @@ namespace Caves_of_Chaos.CreatureScripts
         public int health;
         public double healingOffset = 0;
         public double actionPoints = 0;
+        public List<Item> inventory = new List<Item>();
+        public Item? weapon = null;
 
         public Creature(Point initialPosition, Grid grid, CreatureTemplate template) 
         { 
@@ -83,17 +86,14 @@ namespace Caves_of_Chaos.CreatureScripts
                     Point playerDiff = PlayerManager.player.GetPosition() - position;
                     if (Math.Abs(playerDiff.X) == Math.Abs(playerDiff.Y))
                     {
-                        System.Diagnostics.Debug.WriteLine("Diagonal");
                         return Move(new Point(Math.Sign(playerDiff.X), Math.Sign(playerDiff.Y)));
                     }
                     else if (Program.random.NextDouble() < Math.Abs(playerDiff.X/Utility.Distance(new Point(0,0), playerDiff)))
                     {
-                        System.Diagnostics.Debug.WriteLine("X");
                         return Move(new Point(Math.Sign(playerDiff.X), 0));
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine("Y");
                         return Move(new Point(0, Math.Sign(playerDiff.Y)));
                     }
                 } else
@@ -114,7 +114,7 @@ namespace Caves_of_Chaos.CreatureScripts
             if (activeGrid.GetTile(newPosition).occupant != null)
             {
                 Attack(activeGrid.GetTile(newPosition).occupant);
-                return GetMovementTime();
+                return GetAttackTime();
             }
             activeGrid.GetTile(position).occupant = null;
             position = newPosition;
@@ -133,7 +133,17 @@ namespace Caves_of_Chaos.CreatureScripts
 
         public void Attack(Creature creature)
         {
-            int damage = Utility.randRoundInt(baseAttackStrength * Math.Pow(2, -creature.GetResistance("bludgeoning")));
+            int damage = 0;
+            if (weapon == null)
+            {
+                damage = Utility.randRoundInt(baseAttackStrength 
+                    * Math.Pow(2, -creature.GetResistance("bludgeoning")));
+            } else
+            {
+                damage = Utility.randRoundInt(
+                    Utility.Roll((int)weapon.damageRolls, (int)weapon.damageDie)
+                        * Math.Pow(2, -creature.GetResistance(weapon.damageType)));
+            }
             LogConsole.UpdateLog(name + " attacks " + creature.name + " for " + damage + " damage!");
             creature.Damage(damage);
         }
@@ -153,6 +163,24 @@ namespace Caves_of_Chaos.CreatureScripts
             activeGrid.GetTile(position).occupant = null;
         }
 
+        public void getItem(Item item)
+        {
+            inventory.Add(item);
+            item.owner = this;
+        }
+
+        public void equipItem(Item item)
+        {
+            if (!inventory.Contains(item))
+            {
+                getItem(item);
+            }
+            if (item.hasTag("WEAPON"))
+            {
+                weapon = item;
+            }
+        }
+
         public int GetResistance(String type)
         {
             if (resistances.ContainsKey(type))
@@ -170,6 +198,17 @@ namespace Caves_of_Chaos.CreatureScripts
         public double GetMovementTime()
         {
             return GameSettings.BASE_MOVEMENT_TIME / movementSpeed / actionSpeed;
+        }
+
+        public double GetAttackTime()
+        {
+            if (weapon == null)
+            {
+                return GameSettings.BASE_MOVEMENT_TIME / actionSpeed;
+            } else
+            {
+                return (int)weapon.attackTime / actionSpeed;
+            }
         }
 
         public Boolean HasTag(String tag)

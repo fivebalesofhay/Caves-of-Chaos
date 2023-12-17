@@ -8,6 +8,7 @@ using Caves_of_Chaos.GridScripts;
 using SadConsole.Input;
 using static Caves_of_Chaos.GridScripts.GridManager;
 using static GameSettings;
+using Caves_of_Chaos.ItemScripts;
 
 namespace Caves_of_Chaos.CreatureScripts
 {
@@ -37,6 +38,9 @@ namespace Caves_of_Chaos.CreatureScripts
             }
 
             player = new Creature(point, activeGrid, playerTemplate);
+
+            Item Club = new Item(null, null, ItemManager.getTemplate("club"));
+            player.equipItem(Club);
         }
 
         public static void HandleInput(Keyboard keyboard)

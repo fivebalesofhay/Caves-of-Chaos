@@ -1,6 +1,7 @@
 ﻿using System;
 using Caves_of_Chaos.CreatureScripts;
 using Caves_of_Chaos.GridScripts;
+using Caves_of_Chaos.ItemScripts;
 using SadConsole;
 using SadRogue.Primitives;
 
@@ -37,6 +38,10 @@ namespace Caves_of_Chaos
             // Make the GameContainer the game's Screen
             Game.Instance.Screen = container;
             Game.Instance.DestroyDefaultStartingConsole();
+
+            // Load creature and item templates:
+            CreatureManager.Init();
+            ItemManager.Init();
 
             // Initialize grid and generate layout
             GridManager.Init();

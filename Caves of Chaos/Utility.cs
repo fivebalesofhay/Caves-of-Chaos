@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using static Caves_of_Chaos.GridScripts.GridManager;
 using SadConsole.Input;
 using System.Reflection.Metadata.Ecma335;
+using System.Diagnostics;
 
 namespace Caves_of_Chaos
 {
@@ -78,6 +79,16 @@ namespace Caves_of_Chaos
         public static String Capitalize(String s) 
         {
             return s[0].ToString().ToUpper() + s.Substring(1,s.Length-1);
+        }
+
+        public static int Roll(int num, int die)
+        {
+            int total = 0;
+            for (int i = 0; i < num; i++)
+            {
+                total += Program.random.Next(1, die + 1);
+            }
+            return total;
         }
     }
 }
