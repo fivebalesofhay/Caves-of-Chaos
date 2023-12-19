@@ -40,8 +40,8 @@ namespace Caves_of_Chaos
             Game.Instance.DestroyDefaultStartingConsole();
 
             // Load creature and item templates:
-            CreatureManager.Init();
             ItemManager.Init();
+            CreatureManager.Init();
 
             // Initialize grid and generate layout
             GridManager.Init();

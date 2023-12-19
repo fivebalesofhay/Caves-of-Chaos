@@ -1,0 +1,17 @@
+{
+  "name": "goblin",
+  "symbol": "g",
+  "color": "green",
+  "minDepth": 0,
+  "maxDepth": 2,
+  "spawnRatio": 1,
+  "level": 1,
+  "health": 6,
+  "strength": -1,
+  "dexterity": 0,
+  "movementSpeed": 1,
+  "actionSpeed": 1,
+  "weapons": ["club", "spear"],
+  "weaponRatios": [1,1],
+  "tags": ["AGRESSIVE"]
+}

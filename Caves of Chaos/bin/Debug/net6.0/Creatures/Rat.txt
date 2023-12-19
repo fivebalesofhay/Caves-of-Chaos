@@ -5,11 +5,11 @@
   "minDepth": 0,
   "maxDepth": 3,
   "spawnRatio": 3,
+  "level": 0,
   "health": 1,
-  "strength": 1,
+  "strength": -2,
+  "dexterity": 1,
   "movementSpeed": 2,
   "actionSpeed": 1,
-  "tags": [],
-  "resistances": [],
-  "resistanceStrengths": []
+  "tags": []
 }

@@ -1,0 +1,8 @@
+{
+  "name": "spear",
+  "damageDie": 8,
+  "damageRolls": 1,
+  "damageType": "piercing",
+  "attackTime": 10,
+  "tags": ["WEAPON"]
+}

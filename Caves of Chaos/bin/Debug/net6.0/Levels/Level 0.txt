@@ -3,5 +3,6 @@
   "width": 60,
   "height": 60,
   "creatureDensity": 0.02,
-  "structureDensity": 0.01
+  "structureDensity": 0.01,
+  "itemDensity": 0.01
 }

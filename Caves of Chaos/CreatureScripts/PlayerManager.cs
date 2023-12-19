@@ -9,12 +9,14 @@ using SadConsole.Input;
 using static Caves_of_Chaos.GridScripts.GridManager;
 using static GameSettings;
 using Caves_of_Chaos.ItemScripts;
+using Caves_of_Chaos.UIScripts;
 
 namespace Caves_of_Chaos.CreatureScripts
 {
     public static class PlayerManager
     {
         public static Creature player;
+        public static int exp = 0;
 
         public static void Init()
         {
@@ -23,10 +25,12 @@ namespace Caves_of_Chaos.CreatureScripts
             playerTemplate.name = "Player";
             playerTemplate.symbol = "@";
             playerTemplate.color = "white";
-            playerTemplate.health = 100;
-            playerTemplate.strength = 5;
+            playerTemplate.level = 1;
+            playerTemplate.health = 12;
+            playerTemplate.strength = 0;
+            playerTemplate.dexterity = 0;
             playerTemplate.movementSpeed = 1;
-            playerTemplate.actionSpeed = 1;
+            playerTemplate.actionSpeed = 2;
             playerTemplate.tags = new String[0];
 
             Point point = Utility.RandomPoint();
@@ -39,8 +43,28 @@ namespace Caves_of_Chaos.CreatureScripts
 
             player = new Creature(point, activeGrid, playerTemplate);
 
-            Item Club = new Item(null, null, ItemManager.getTemplate("club"));
-            player.equipItem(Club);
+            Item Club = new Item(null, null, ItemManager.GetTemplate("club"));
+            player.EquipItem(Club);
+        }
+
+        public static void GainExp(int expGained)
+        {
+            exp += expGained;
+            if (exp >= player.level * player.level * EXP_COEFFICIENT)
+            {
+                exp = exp - player.level * player.level * EXP_COEFFICIENT;
+                LevelUp();
+            }
+        }
+
+        public static void LevelUp()
+        {
+            player.level++;
+            player.maxHealth = 6 + 6 * player.level;
+            if (player.level % LEVELS_PER_STAT_INCREASE == 0)
+            {
+                ModeManager.IncreaseStats();
+            }
         }
 
         public static void HandleInput(Keyboard keyboard)

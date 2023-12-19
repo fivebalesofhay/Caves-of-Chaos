@@ -29,7 +29,7 @@ namespace Caves_of_Chaos.ItemScripts
             }
         }
 
-        public static ItemTemplate? getTemplate(String name)
+        public static ItemTemplate? GetTemplate(String name)
         {
             for (int i = 0; i < templates.Count; i++)
             {

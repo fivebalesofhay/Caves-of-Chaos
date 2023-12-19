@@ -18,7 +18,7 @@ namespace Caves_of_Chaos.GridScripts
 
         public Creature? occupant;
         public Structure? structure;
-        public Item? item;
+        public List<Item> items = new List<Item>();
 
         public bool isSeen = false;
         public bool wasSeen = false;

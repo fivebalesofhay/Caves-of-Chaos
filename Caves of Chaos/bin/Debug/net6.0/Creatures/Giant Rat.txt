@@ -5,11 +5,11 @@
   "minDepth": 0,
   "maxDepth": 3,
   "spawnRatio": 100,
-  "health": 10,
-  "strength": 4,
+  "level": 1,
+  "health": 8,
+  "strength": 0,
+  "dexterity": -1,
   "movementSpeed": 1,
   "actionSpeed": 1,
-  "tags": ["AGRESSIVE"],
-  "resistances": ["bludgeoning"],
-  "resistanceStrengths": [1]
+  "tags": ["AGRESSIVE"]
 }

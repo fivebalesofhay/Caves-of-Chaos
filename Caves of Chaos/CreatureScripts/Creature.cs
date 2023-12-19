@@ -22,8 +22,11 @@ namespace Caves_of_Chaos.CreatureScripts
         public int minDepth;
         public int maxDepth;
         public double spawnRatio;
+        public int level;
         public int maxHealth;
         public double baseAttackStrength;
+        public int strength;
+        public int dexterity;
         public double movementSpeed;
         public double actionSpeed;
         public String[] tags;
@@ -41,20 +44,45 @@ namespace Caves_of_Chaos.CreatureScripts
             glyph = new ColoredGlyph(Palette.colors[template.color], Palette.black, template.symbol.ToCharArray()[0]);
 
             name = template.name;
+            level = template.level;
             maxHealth = template.health;
+            strength = template.strength; 
+            dexterity = template.dexterity;
             baseAttackStrength = template.strength;
             movementSpeed = template.movementSpeed; 
             actionSpeed = template.actionSpeed;
             tags = template.tags;
             resistances = new Dictionary<string, int>();
             
-            if (template.resistances != null)
+            if (template.resistances != null && template.resistanceStrengths != null)
             {
                 for (int i = 0; i < template.resistances.Length; i++)
                 {
                     resistances.Add(template.resistances[i], template.resistanceStrengths[i]);
-                    
                 }
+            }
+
+            if (template.weapons != null && template.weaponRatios != null)
+            {
+                double totalSpawnRatio = 0.0;
+                for (int i = 0; i < template.weaponRatios.Length; i++)
+                {
+                    totalSpawnRatio += template.weaponRatios[i];
+                }
+
+                double randomIndex = Program.random.NextDouble() * totalSpawnRatio;
+                int chosenIndex = 0;
+                for (int i = 0; i < template.weaponRatios.Length; i++)
+                {
+                    randomIndex -= template.weaponRatios[i];
+                    if (randomIndex < 0)
+                    {
+                        chosenIndex = i;
+                        break;
+                    }
+                }
+                Item item = new Item(null, null, ItemManager.GetTemplate(template.weapons[chosenIndex]));
+                EquipItem(item);
             }
 
             grid.tiles[position.X, position.Y].occupant = this;
@@ -136,7 +164,7 @@ namespace Caves_of_Chaos.CreatureScripts
             int damage = 0;
             if (weapon == null)
             {
-                damage = Utility.randRoundInt(baseAttackStrength 
+                damage = Utility.randRoundInt(Utility.Roll(1, 4)
                     * Math.Pow(2, -creature.GetResistance("bludgeoning")));
             } else
             {
@@ -145,40 +173,69 @@ namespace Caves_of_Chaos.CreatureScripts
                         * Math.Pow(2, -creature.GetResistance(weapon.damageType)));
             }
             LogConsole.UpdateLog(name + " attacks " + creature.name + " for " + damage + " damage!");
-            creature.Damage(damage);
+            Boolean died = creature.Damage(damage);
+            if (died && this == PlayerManager.player)
+            {
+                PlayerManager.GainExp(creature.level * creature.level);
+            }
         }
 
-        public void Damage(int amount)
+        // Returns whether the creature died
+        public Boolean Damage(int amount)
         {
             health -= amount;
             if (health <= 0)
             {
                 Die();
+                return true;
             }
+            return false;
         }
 
         public void Die()
         {
             activeGrid.creatures.Remove(this);
             activeGrid.GetTile(position).occupant = null;
+            for (int i = 0; i < inventory.Count; i++)
+            {
+                DropItem(inventory[i]);
+            }
         }
 
-        public void getItem(Item item)
+        public void GetItem(Item item)
         {
             inventory.Add(item);
             item.owner = this;
+            if (item.position == null) { return; }
+            Point pos = (Point)item.position;
+            activeGrid.tiles[pos.X, pos.Y].items.Remove(item);
+            item.position = null;
         }
 
-        public void equipItem(Item item)
+        public void EquipItem(Item item)
         {
             if (!inventory.Contains(item))
             {
-                getItem(item);
+                GetItem(item);
             }
             if (item.hasTag("WEAPON"))
             {
+                if (weapon != null)
+                {
+                    weapon.equipped = false;
+                }
                 weapon = item;
+                weapon.equipped = true;
             }
+        }
+
+        public void DropItem(Item item)
+        {
+            item.equipped = false;
+            item.owner = null;
+            inventory.Remove(item);
+            item.position = position;
+            activeGrid.tiles[position.X,position.Y].items.Add(item);
         }
 
         public int GetResistance(String type)

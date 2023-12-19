@@ -19,6 +19,7 @@ namespace Caves_of_Chaos.ItemScripts
         public int? attackTime;
 
         public Point? position;
+        public Boolean equipped = false;
 
         public Item(Point? initialPosition, Grid? grid, ItemTemplate template) { 
             name = template.name; 
@@ -31,7 +32,7 @@ namespace Caves_of_Chaos.ItemScripts
             position = initialPosition;
             if (position != null && grid != null) {
                 Point p = (Point)position;
-                grid.tiles[p.X, p.Y].item = this;
+                grid.tiles[p.X, p.Y].items.Add(this);
             }
         }
 

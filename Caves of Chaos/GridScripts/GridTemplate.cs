@@ -13,5 +13,6 @@ namespace Caves_of_Chaos.GridScripts
         public int height { get; set; }
         public double creatureDensity { get; set; }
         public double structureDensity { get; set; }
+        public double itemDensity { get; set; }
     }
 }

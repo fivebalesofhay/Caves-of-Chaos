@@ -15,7 +15,7 @@ namespace Caves_of_Chaos.UIScripts
 {
     public static class InfoConsole
     {
-        public static void updateStats()
+        public static void UpdateStats()
         {
             container.infoConsole.Clear();
             if (mode == modes.Examine)
@@ -35,10 +35,24 @@ namespace Caves_of_Chaos.UIScripts
                     container.infoConsole.Print(1, index, 
                         Utility.Capitalize(activeGrid.tiles[ExamineMode.pos.X, ExamineMode.pos.Y].occupant.name));
                 }
+                for (int i = 0; i < activeGrid.tiles[ExamineMode.pos.X,ExamineMode.pos.Y].items.Count;i++)
+                {
+                    index++;
+                    container.infoConsole.Print(1, index,
+                        Utility.Capitalize(activeGrid.tiles[ExamineMode.pos.X, ExamineMode.pos.Y].items[i].name));
+                }
             }
             else
             {
-                container.infoConsole.Print(1, 0, "Health: " + player.health);
+                int index = 0;
+                container.infoConsole.Print(1, index, "Health: " + player.health);
+                index++;
+                container.infoConsole.Print(1, index, "EXP: " + exp + "/" + (player.level * player.level * EXP_COEFFICIENT));
+                index += 2;
+
+                container.infoConsole.Print(1, index, "Strength: " + player.strength);
+                index++;
+                container.infoConsole.Print(1, index, "Dexterity: " + player.dexterity);
             }
 
             // Redraw borders:

@@ -8,6 +8,7 @@ using Caves_of_Chaos.CreatureScripts;
 using System.Text.Json;
 using System.Collections;
 using Caves_of_Chaos.StructureScripts;
+using Caves_of_Chaos.ItemScripts;
 
 namespace Caves_of_Chaos.GridScripts
 {
@@ -25,6 +26,7 @@ namespace Caves_of_Chaos.GridScripts
         public readonly int height;
         public readonly double creatureDensity;
         public readonly double structureDensity;
+        public readonly double itemDensity;
 
         public Grid(GridTemplate template)
         {
@@ -33,6 +35,7 @@ namespace Caves_of_Chaos.GridScripts
             height = template.height;
             creatureDensity = template.creatureDensity;
             structureDensity = template.structureDensity;
+            itemDensity = template.itemDensity;
 
             tiles = new Tile[width, height];
 
@@ -50,6 +53,7 @@ namespace Caves_of_Chaos.GridScripts
             GenerateWalker();
             GenerateStructures();
             SpawnCreatures();
+            SpawnItems();
         }
 
         public Tile GetTile(Point position)
@@ -159,6 +163,40 @@ namespace Caves_of_Chaos.GridScripts
                             }
                         }
                         Creature creature = new Creature(new Point(i, j), this, levelTemplates[chosenIndex]);
+                    }
+                }
+            }
+        }
+
+        public void SpawnItems()
+        {
+            // To do: weighted item spawning
+            // Prepare for deciding to spawn items
+            double totalSpawnRatio = 0.0;
+            for (int i = 0; i < ItemManager.templates.Count; i++)
+            {
+                totalSpawnRatio += 1;
+            }
+
+            // For every tile, maybe spawn item:
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    if (!GetTile(new Point(i, j)).isWall && Program.random.NextDouble() < itemDensity)
+                    {
+                        double randomIndex = Program.random.NextDouble() * totalSpawnRatio;
+                        int chosenIndex = 0;
+                        for (int k = 0; k < ItemManager.templates.Count; k++)
+                        {
+                            randomIndex -= 1;
+                            if (randomIndex < 0)
+                            {
+                                chosenIndex = k;
+                                break;
+                            }
+                        }
+                        Item item = new Item(new Point(i, j), this, ItemManager.templates[chosenIndex]);
                     }
                 }
             }
