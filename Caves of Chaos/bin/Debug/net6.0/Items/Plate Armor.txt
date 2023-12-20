@@ -1,0 +1,5 @@
+{
+  "name": "plate armor",
+  "armorValue": 6,
+  "tags": ["ARMOR"]
+}

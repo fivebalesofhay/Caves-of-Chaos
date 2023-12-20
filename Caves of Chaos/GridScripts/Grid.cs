@@ -116,7 +116,7 @@ namespace Caves_of_Chaos.GridScripts
                         for (int k = 0; k < templates.Count; k++)
                         {
                             randomIndex -= templates[k].spawnRatio;
-                            if (randomIndex < 0)
+                            if (randomIndex <= 0)
                             {
                                 chosenIndex = k;
                                 break;
@@ -156,7 +156,7 @@ namespace Caves_of_Chaos.GridScripts
                         for (int k = 0; k < levelTemplates.Count; k++)
                         {
                             randomIndex -= levelTemplates[k].spawnRatio;
-                            if (randomIndex < 0)
+                            if (randomIndex <= 0)
                             {
                                 chosenIndex = k;
                                 break;
@@ -190,7 +190,7 @@ namespace Caves_of_Chaos.GridScripts
                         for (int k = 0; k < ItemManager.templates.Count; k++)
                         {
                             randomIndex -= 1;
-                            if (randomIndex < 0)
+                            if (randomIndex <= 0)
                             {
                                 chosenIndex = k;
                                 break;

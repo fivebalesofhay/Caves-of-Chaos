@@ -76,6 +76,22 @@ namespace Caves_of_Chaos.UIScripts
             else if (keyboard.IsKeyPressed(Keys.Down) || keyboard.IsKeyPressed(Keys.NumPad2))
             {
                 selection++;
+            } else if (keyboard.IsKeyPressed(Keys.Enter))
+            {
+                ItemScripts.Item item = PlayerManager.player.inventory[selection];
+                MessageConsole.strings.Clear();
+                MessageConsole.strings.Add(Utility.Capitalize(item.name));
+                MessageConsole.strings.Add("");
+                if (item.HasTag("WEAPON"))
+                {
+                    MessageConsole.strings.Add("Damage: " + item.damageRolls + "d" + item.damageDie);
+                    MessageConsole.strings.Add("Attack Time: " + item.attackTime);
+                } else if (item.HasTag("ARMOR"))
+                {
+                    MessageConsole.strings.Add("Armor Value: " + item.armorValue);
+                }
+                ModeManager.mode = ModeManager.modes.Message;
+                MessageConsole.Render();
             }
             if (selection < 0)
             {

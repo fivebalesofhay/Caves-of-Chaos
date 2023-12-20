@@ -1,0 +1,15 @@
+{
+  "name": "giant spider",
+  "symbol": "S",
+  "color": "brown",
+  "minDepth": 0,
+  "maxDepth": 2,
+  "spawnRatio": 0.5,
+  "level": 2,
+  "health": 6,
+  "strength": -2,
+  "dexterity": 2,
+  "movementSpeed": 2,
+  "actionSpeed": 1,
+  "tags": ["AGRESSIVE"]
+}

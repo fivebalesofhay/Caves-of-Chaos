@@ -12,9 +12,10 @@ namespace Caves_of_Chaos.UIScripts
 {
     public static class ModeManager
     {
-        public enum modes {Grid, Examine, Inventory, Decision};
+        public enum modes {Grid, Examine, Inventory, Decision, Message};
         public static modes mode = modes.Grid;
         public static bool mustMakeDecision = false;
+        public static bool lockedMessage = false;
 
         public static void Draw()
         {
@@ -115,6 +116,14 @@ namespace Caves_of_Chaos.UIScripts
                 else
                 {
                     DecisionConsole.HandleInput(keyboard);
+                }
+            } else if (mode == modes.Message)
+            {
+                if (keyboard.IsKeyPressed(Keys.Escape) && !lockedMessage)
+                {
+                    mode = modes.Grid;
+                    Program.container.smallScreenConsole.IsVisible = false;
+                    Program.container.largeScreenConsole.IsVisible = false;
                 }
             }
         }

@@ -1,0 +1,15 @@
+{
+  "name": "dragon",
+  "symbol": "D",
+  "color": "lightGreen",
+  "minDepth": 4,
+  "maxDepth": 4,
+  "spawnRatio": 0,
+  "level": 10,
+  "health": 60,
+  "strength": 4,
+  "dexterity": 0,
+  "movementSpeed": 1,
+  "actionSpeed": 1,
+  "tags": ["AGRESSIVE"]
+}

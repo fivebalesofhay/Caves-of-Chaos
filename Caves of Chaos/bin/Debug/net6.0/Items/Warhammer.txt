@@ -1,0 +1,8 @@
+{
+  "name": "warhammer",
+  "damageDie": 5,
+  "damageRolls": 4,
+  "damageType": "bludgeoning",
+  "attackTime": 15,
+  "tags": ["WEAPON"]
+}

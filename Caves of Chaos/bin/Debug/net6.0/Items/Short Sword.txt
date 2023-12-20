@@ -1,0 +1,8 @@
+{
+  "name": "short sword",
+  "damageDie": 10,
+  "damageRolls": 1,
+  "damageType": "piercing",
+  "attackTime": 9,
+  "tags": ["WEAPON"]
+}

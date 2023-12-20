@@ -21,4 +21,5 @@
     // Creature settings:
     public const double BASE_MOVEMENT_TIME = 10;
     public const double BASE_HEALING_RATE = 0.002; // In percent of max health per tu
+    public const double STRENGTH_DAMAGE_MULTIPLIER = 0.1;
 }

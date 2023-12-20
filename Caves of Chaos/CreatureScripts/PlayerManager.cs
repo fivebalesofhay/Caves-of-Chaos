@@ -30,7 +30,7 @@ namespace Caves_of_Chaos.CreatureScripts
             playerTemplate.strength = 0;
             playerTemplate.dexterity = 0;
             playerTemplate.movementSpeed = 1;
-            playerTemplate.actionSpeed = 2;
+            playerTemplate.actionSpeed = 1;
             playerTemplate.tags = new String[0];
 
             Point point = Utility.RandomPoint();
@@ -43,8 +43,8 @@ namespace Caves_of_Chaos.CreatureScripts
 
             player = new Creature(point, activeGrid, playerTemplate);
 
-            Item Club = new Item(null, null, ItemManager.GetTemplate("club"));
-            player.EquipItem(Club);
+            Item club = new Item(null, null, ItemManager.GetTemplate("club"));
+            player.EquipItem(club);
         }
 
         public static void GainExp(int expGained)
@@ -107,7 +107,7 @@ namespace Caves_of_Chaos.CreatureScripts
             }
             else if (keyboard.IsKeyPressed(Keys.OemPeriod) && activeGrid.GetTile(player.GetPosition()).structure != null)
             {
-                if (activeGrid.GetTile(player.GetPosition()).structure.name == "Down Stair")
+                if (activeGrid.GetTile(player.GetPosition()).structure.name == "down stair")
                 {
                     activeGrid.GetTile(player.GetPosition()).occupant = null;
                     activeGrid.creatures.Remove(player);
@@ -128,7 +128,7 @@ namespace Caves_of_Chaos.CreatureScripts
             }
             else if (keyboard.IsKeyPressed(Keys.OemComma) && activeGrid.GetTile(player.GetPosition()).structure != null)
             {
-                if (activeGrid.GetTile(player.GetPosition()).structure.name == "Up Stair")
+                if (activeGrid.GetTile(player.GetPosition()).structure.name == "up stair")
                 {
                     activeGrid.GetTile(player.GetPosition()).occupant = null;
                     activeGrid.creatures.Remove(player);

@@ -1,0 +1,15 @@
+{
+  "name": "wyrmling",
+  "symbol": "d",
+  "color": "red",
+  "minDepth": 3,
+  "maxDepth": 4,
+  "spawnRatio": 1,
+  "level": 8,
+  "health": 35,
+  "strength": 1,
+  "dexterity": 3,
+  "movementSpeed": 1.5,
+  "actionSpeed": 1,
+  "tags": ["AGRESSIVE"]
+}

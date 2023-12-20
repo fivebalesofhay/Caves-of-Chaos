@@ -1,0 +1,19 @@
+{
+  "name": "orc",
+  "symbol": "o",
+  "color": "red",
+  "minDepth": 1,
+  "maxDepth": 3,
+  "spawnRatio": 1,
+  "level": 4,
+  "health": 16,
+  "strength": 2,
+  "dexterity": -1,
+  "movementSpeed": 1,
+  "actionSpeed": 1,
+  "weapons": ["short sword", "mace"],
+  "weaponRatios": [1,1],
+  "armors": ["leather armor", "chain mail"],
+  "armorRatios": [1,1],
+  "tags": ["AGRESSIVE"]
+}

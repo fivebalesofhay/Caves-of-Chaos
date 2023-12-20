@@ -13,6 +13,7 @@ namespace Caves_of_Chaos.ItemScripts
         public int? damageRolls { get; set; }
         public String? damageType { get; set; }
         public int? attackTime { get; set; }
+        public int? armorValue { get; set; }
         public String[] tags { get; set; }
     }
 }

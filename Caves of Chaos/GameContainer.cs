@@ -25,7 +25,8 @@ namespace Caves_of_Chaos
         public SadConsole.Console logConsole = new SadConsole.Console(GAME_WIDTH, GAME_HEIGHT - GRID_CONSOLE_HEIGHT);
         // Inventory Screen:
         public SadConsole.Console largeScreenConsole = new SadConsole.Console(LARGE_SCREEN_WIDTH, LARGE_SCREEN_HEIGHT);
-        public SadConsole.Console smallScreenConsole = new SadConsole.Console(LARGE_SCREEN_WIDTH, LARGE_SCREEN_HEIGHT);
+        // Decisions and messages screen:
+        public SadConsole.Console smallScreenConsole = new SadConsole.Console(SMALL_SCREEN_WIDTH, SMALL_SCREEN_HEIGHT);
 
         public GameContainer()
         {
@@ -82,7 +83,7 @@ namespace Caves_of_Chaos
             base.Update(delta);
 
             // Main game loop:
-            while (player.actionPoints < 0)
+            while (player.actionPoints < 0 && player.health > 0)
             {
                 CreatureManager.UpdateCreatures();
             }

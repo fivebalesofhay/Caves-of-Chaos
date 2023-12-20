@@ -10,6 +10,7 @@ using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using static Caves_of_Chaos.GridScripts.GridManager;
 using Caves_of_Chaos.ItemScripts;
+using System.Diagnostics;
 
 namespace Caves_of_Chaos.CreatureScripts
 {
@@ -37,6 +38,7 @@ namespace Caves_of_Chaos.CreatureScripts
         public double actionPoints = 0;
         public List<Item> inventory = new List<Item>();
         public Item? weapon = null;
+        public Item? armor = null;
 
         public Creature(Point initialPosition, Grid grid, CreatureTemplate template) 
         { 
@@ -75,14 +77,43 @@ namespace Caves_of_Chaos.CreatureScripts
                 for (int i = 0; i < template.weaponRatios.Length; i++)
                 {
                     randomIndex -= template.weaponRatios[i];
-                    if (randomIndex < 0)
+                    if (randomIndex <= 0)
                     {
                         chosenIndex = i;
                         break;
                     }
                 }
-                Item item = new Item(null, null, ItemManager.GetTemplate(template.weapons[chosenIndex]));
-                EquipItem(item);
+                if (template.weapons[chosenIndex] != "none")
+                {
+                    Item item = new Item(null, null, ItemManager.GetTemplate(template.weapons[chosenIndex]));
+                    EquipItem(item);
+                }
+            }
+
+            if (template.armors != null && template.armorRatios != null)
+            {
+                double totalSpawnRatio = 0.0;
+                for (int i = 0; i < template.armorRatios.Length; i++)
+                {
+                    totalSpawnRatio += template.armorRatios[i];
+                }
+
+                double randomIndex = Program.random.NextDouble() * totalSpawnRatio;
+                int chosenIndex = 0;
+                for (int i = 0; i < template.armorRatios.Length; i++)
+                {
+                    randomIndex -= template.armorRatios[i];
+                    if (randomIndex <= 0)
+                    {
+                        chosenIndex = i;
+                        break;
+                    }
+                }
+                if (template.armors[chosenIndex] != "none")
+                {
+                    Item item = new Item(null, null, ItemManager.GetTemplate(template.armors[chosenIndex]));
+                    EquipItem(item);
+                }
             }
 
             grid.tiles[position.X, position.Y].occupant = this;
@@ -161,6 +192,19 @@ namespace Caves_of_Chaos.CreatureScripts
 
         public void Attack(Creature creature)
         {
+            // Check to see if the attack misses or is deflected by armor (uses a sigmoid function)
+            if (Program.random.NextDouble() < 1 / (1 + Math.Pow(1.5, GetAccuracy()-creature.GetDodgeValue())))
+            {
+                LogConsole.UpdateLog(name + " misses " + creature.name + "!");
+                return;
+            }
+            if (Program.random.NextDouble() < 1 / (1 + Math.Pow(1.4, GetArmorPierce() - creature.GetArmorValue()))
+                && creature.GetArmorValue() > 0)
+            {
+                LogConsole.UpdateLog(name + " attacks " + creature.name + ", but it is deflected by its armor!");
+                return;
+            }
+
             int damage = 0;
             if (weapon == null)
             {
@@ -172,6 +216,19 @@ namespace Caves_of_Chaos.CreatureScripts
                     Utility.Roll((int)weapon.damageRolls, (int)weapon.damageDie)
                         * Math.Pow(2, -creature.GetResistance(weapon.damageType)));
             }
+            damage = Utility.randRoundInt(damage * (1 + strength * GameSettings.STRENGTH_DAMAGE_MULTIPLIER));
+            // Armor damage reduction:
+            if (creature.GetArmorValue() > 0)
+            {
+                int reduction = Program.random.Next((int)creature.GetArmorValue() + 1);
+                damage -= reduction;
+                // Strength can regain some damage
+                if (strength > 0)
+                {
+                    damage += Math.Min(Program.random.Next(strength + 1), reduction);
+                }
+            }
+            damage = Math.Max(damage, 0);
             LogConsole.UpdateLog(name + " attacks " + creature.name + " for " + damage + " damage!");
             Boolean died = creature.Damage(damage);
             if (died && this == PlayerManager.player)
@@ -196,9 +253,27 @@ namespace Caves_of_Chaos.CreatureScripts
         {
             activeGrid.creatures.Remove(this);
             activeGrid.GetTile(position).occupant = null;
-            for (int i = 0; i < inventory.Count; i++)
+            for (int i = inventory.Count-1; i >= 0; i--)
             {
                 DropItem(inventory[i]);
+            }
+
+            if (this == PlayerManager.player)
+            {
+                ModeManager.lockedMessage = true;
+                ModeManager.mode = ModeManager.modes.Message;
+                MessageConsole.strings.Clear();
+                MessageConsole.strings.Add("You died.");
+                MessageConsole.Render();
+            }
+            if (name == "dragon")
+            {
+                ModeManager.lockedMessage = true;
+                ModeManager.mode = ModeManager.modes.Message;
+                MessageConsole.strings.Clear();
+                MessageConsole.strings.Add("You won!!!!");
+                MessageConsole.strings.Add("Yipeeeeeeeeeeeee :)");
+                MessageConsole.Render();
             }
         }
 
@@ -218,7 +293,7 @@ namespace Caves_of_Chaos.CreatureScripts
             {
                 GetItem(item);
             }
-            if (item.hasTag("WEAPON"))
+            if (item.HasTag("WEAPON"))
             {
                 if (weapon != null)
                 {
@@ -226,6 +301,14 @@ namespace Caves_of_Chaos.CreatureScripts
                 }
                 weapon = item;
                 weapon.equipped = true;
+            } else if (item.HasTag("ARMOR"))
+            {
+                if (armor != null)
+                {
+                    armor.equipped = false;
+                }
+                armor = item;
+                armor.equipped = true;
             }
         }
 
@@ -255,6 +338,32 @@ namespace Caves_of_Chaos.CreatureScripts
         public double GetMovementTime()
         {
             return GameSettings.BASE_MOVEMENT_TIME / movementSpeed / actionSpeed;
+        }
+
+        public double GetDodgeValue()
+        {
+            return dexterity;
+        }
+        public double GetArmorValue()
+        {
+            if (armor != null)
+            {
+                if (armor.armorValue != null)
+                {
+                    return (int)armor.armorValue;
+                }
+            }
+            return 0;
+        }
+
+        public double GetAccuracy()
+        {
+            return 1 + dexterity;
+        }
+
+        public double GetArmorPierce()
+        {
+            return 3 + strength * 2;
         }
 
         public double GetAttackTime()

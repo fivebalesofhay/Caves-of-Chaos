@@ -3,7 +3,7 @@
   "symbol": "<",
   "color": "white",
   "minDepth": 1,
-  "maxDepth": 1,
+  "maxDepth": 4,
   "spawnRatio": 0,
   "minNumber": 10
 }

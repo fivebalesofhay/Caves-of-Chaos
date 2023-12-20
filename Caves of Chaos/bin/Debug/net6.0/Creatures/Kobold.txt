@@ -1,0 +1,19 @@
+{
+  "name": "kobold",
+  "symbol": "k",
+  "color": "yellow",
+  "minDepth": 1,
+  "maxDepth": 4,
+  "spawnRatio": 1,
+  "level": 3,
+  "health": 12,
+  "strength": -1,
+  "dexterity": 2,
+  "movementSpeed": 1,
+  "actionSpeed": 1,
+  "weapons": ["short sword", "spear"],
+  "weaponRatios": [1,1],
+  "armors": ["none"],
+  "armorRatios": [1],
+  "tags": ["AGRESSIVE"]
+}

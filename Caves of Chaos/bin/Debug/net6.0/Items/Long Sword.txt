@@ -1,0 +1,8 @@
+{
+  "name": "long sword",
+  "damageDie": 12,
+  "damageRolls": 1,
+  "damageType": "slashing",
+  "attackTime": 8,
+  "tags": ["WEAPON"]
+}

@@ -1,0 +1,5 @@
+{
+  "name": "leather armor",
+  "armorValue": 2,
+  "tags": ["ARMOR"]
+}

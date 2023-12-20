@@ -13,10 +13,13 @@ namespace Caves_of_Chaos.ItemScripts
         public Creature? owner = null;
         public String name;
         public String[] tags;
+        // Weapon variables:
         public int? damageDie;
         public int? damageRolls;
         public String? damageType;
         public int? attackTime;
+        // Armor variables: 
+        public int? armorValue;
 
         public Point? position;
         public Boolean equipped = false;
@@ -28,6 +31,7 @@ namespace Caves_of_Chaos.ItemScripts
             damageRolls = template.damageRolls;
             damageType = template.damageType;
             attackTime = template.attackTime;
+            armorValue = template.armorValue;
 
             position = initialPosition;
             if (position != null && grid != null) {
@@ -36,7 +40,7 @@ namespace Caves_of_Chaos.ItemScripts
             }
         }
 
-        public Boolean hasTag(String s)
+        public Boolean HasTag(String s)
         {
             return tags.Contains(s);
         }

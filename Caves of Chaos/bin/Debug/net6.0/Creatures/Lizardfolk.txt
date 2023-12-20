@@ -1,0 +1,19 @@
+{
+  "name": "lizardfolk",
+  "symbol": "l",
+  "color": "yellow",
+  "minDepth": 3,
+  "maxDepth": 4,
+  "spawnRatio": 1,
+  "level": 6,
+  "health": 40,
+  "strength": 2,
+  "dexterity": 1,
+  "movementSpeed": 1,
+  "actionSpeed": 1,
+  "weapons": ["warhammer", "long sword"],
+  "weaponRatios": [1,1],
+  "armors": ["chain mail", "plate armor"],
+  "armorRatios": [1,1],
+  "tags": ["AGRESSIVE"]
+}

@@ -1,0 +1,8 @@
+{
+  "name": "mace",
+  "damageDie": 3,
+  "damageRolls": 4,
+  "damageType": "bludgeoning",
+  "attackTime": 12,
+  "tags": ["WEAPON"]
+}

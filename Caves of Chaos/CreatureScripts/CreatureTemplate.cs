@@ -23,6 +23,8 @@ namespace Caves_of_Chaos.CreatureScripts
         public double actionSpeed { get; set; }
         public String[]? weapons { get; set; }
         public int[]? weaponRatios { get; set; }
+        public String[]? armors { get; set; }
+        public int[]? armorRatios { get; set; }
         public String[] tags { get; set; }
         public String[]? resistances { get; set; }
         public int[]? resistanceStrengths { get; set; }

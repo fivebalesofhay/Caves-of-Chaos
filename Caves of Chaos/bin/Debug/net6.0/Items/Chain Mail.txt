@@ -1,0 +1,5 @@
+{
+  "name": "chain mail",
+  "armorValue": 4,
+  "tags": ["ARMOR"]
+}
