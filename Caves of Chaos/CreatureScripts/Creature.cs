@@ -335,9 +335,31 @@ namespace Caves_of_Chaos.CreatureScripts
             return position;
         }
 
+        public int GetStrength()
+        {
+            return strength;
+        }
+
+        public int GetDexterity()
+        {
+            return dexterity;
+        }
+
         public double GetMovementTime()
         {
             return GameSettings.BASE_MOVEMENT_TIME / movementSpeed / actionSpeed;
+        }
+
+        public double GetAttackTime()
+        {
+            if (weapon == null)
+            {
+                return GameSettings.BASE_MOVEMENT_TIME / actionSpeed;
+            }
+            else
+            {
+                return (int)weapon.attackTime / actionSpeed;
+            }
         }
 
         public double GetDodgeValue()
@@ -364,17 +386,6 @@ namespace Caves_of_Chaos.CreatureScripts
         public double GetArmorPierce()
         {
             return 3 + strength * 2;
-        }
-
-        public double GetAttackTime()
-        {
-            if (weapon == null)
-            {
-                return GameSettings.BASE_MOVEMENT_TIME / actionSpeed;
-            } else
-            {
-                return (int)weapon.attackTime / actionSpeed;
-            }
         }
 
         public Boolean HasTag(String tag)
