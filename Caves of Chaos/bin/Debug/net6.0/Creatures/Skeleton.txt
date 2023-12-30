@@ -1,0 +1,19 @@
+{
+  "name": "skeleton",
+  "symbol": "s",
+  "color": "white",
+  "minDepth": 2,
+  "maxDepth": 3,
+  "spawnRatio": 1,
+  "level": 5,
+  "health": 32,
+  "strength": 0,
+  "dexterity": 0,
+  "movementSpeed": 1,
+  "actionSpeed": 1,
+  "weapons": ["warhammer", "long sword"],
+  "weaponRatios": [1,1],
+  "resistances": ["bludgeoning", "piercing"],
+  "resistanceStrengths": [-1, 1],
+  "tags": ["AGRESSIVE"]
+}

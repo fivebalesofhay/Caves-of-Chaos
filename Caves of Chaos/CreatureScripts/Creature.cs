@@ -138,31 +138,57 @@ namespace Caves_of_Chaos.CreatureScripts
         public double Act()
         {
             // Simplest possible brain. Replace later with something better
+            Point movement = new Point(0, 0);
             if (HasTag("AGRESSIVE"))
             {
                 if (activeGrid.GetTile(position).isSeen)
                 {
                     Point playerDiff = PlayerManager.player.GetPosition() - position;
-                    if (Math.Abs(playerDiff.X) == Math.Abs(playerDiff.Y))
+                    if (Math.Abs(playerDiff.X) == Math.Abs(playerDiff.Y)
+                        && !activeGrid.tiles[position.X + Math.Sign(playerDiff.X), position.Y + Math.Sign(playerDiff.Y)].isWall)
                     {
-                        return Move(new Point(Math.Sign(playerDiff.X), Math.Sign(playerDiff.Y)));
+                        movement = new Point(Math.Sign(playerDiff.X), Math.Sign(playerDiff.Y));
                     }
-                    else if (Program.random.NextDouble() < Math.Abs(playerDiff.X/Utility.Distance(new Point(0,0), playerDiff)))
+                    else if (Math.Abs(playerDiff.X) > Math.Abs(playerDiff.Y))
                     {
-                        return Move(new Point(Math.Sign(playerDiff.X), 0));
+                        if (Program.random.NextDouble() < Math.Abs(playerDiff.X / Utility.Distance(new Point(0, 0), playerDiff))
+                            && !activeGrid.tiles[position.X + Math.Sign(playerDiff.X), position.Y + Math.Sign(playerDiff.Y)].isWall)
+                        {
+                            movement = new Point(Math.Sign(playerDiff.X), Math.Sign(playerDiff.Y));
+                        } else
+                        {
+                            movement = new Point(Math.Sign(playerDiff.X), 0);
+                        }
                     }
                     else
                     {
-                        return Move(new Point(0, Math.Sign(playerDiff.Y)));
+                        if (Program.random.NextDouble() < Math.Abs(playerDiff.Y / Utility.Distance(new Point(0, 0), playerDiff))
+                            && !activeGrid.tiles[position.X + Math.Sign(playerDiff.X), position.Y + Math.Sign(playerDiff.Y)].isWall)
+                        {
+                            movement = new Point(Math.Sign(playerDiff.X), Math.Sign(playerDiff.Y));
+                        }
+                        else
+                        {
+                            movement = new Point(0, Math.Sign(playerDiff.Y));
+                        }
                     }
                 } else
                 {
-                    return Move(Utility.RandomDirection());
+                    movement = Utility.RandomDirection();
                 }
             } else
             {
-                return Move(Utility.RandomDirection());
+                movement = Utility.RandomDirection();
             }
+
+            // Don't attack anyone but the player
+            if (activeGrid.GetTile(position + movement).occupant != PlayerManager.player 
+                    && activeGrid.GetTile(position + movement).occupant != null)
+            {
+                return GetMovementTime();
+            }
+
+            return Move(movement);
         }
 
         public double Move(Point direction)
