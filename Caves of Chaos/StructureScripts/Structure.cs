@@ -14,6 +14,7 @@ namespace Caves_of_Chaos.StructureScripts
 
         public ColoredGlyph glyph;
         public String name;
+        public String[] tags;
 
         public Structure(Point initialPosition, Grid grid, StructureTemplate template)
         {
@@ -32,6 +33,7 @@ namespace Caves_of_Chaos.StructureScripts
             }
             name = template.name;
             position = initialPosition;
+            tags = template.tags;
 
             grid.tiles[position.X, position.Y].structure = this;
 
@@ -39,6 +41,11 @@ namespace Caves_of_Chaos.StructureScripts
             {
                 Grow((int)template.growth, grid);
             }
+        }
+
+        public Boolean HasTag(String s)
+        {
+            return tags.Contains(s);
         }
 
         private void Grow(int steps, Grid grid)

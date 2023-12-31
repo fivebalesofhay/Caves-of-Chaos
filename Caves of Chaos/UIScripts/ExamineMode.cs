@@ -58,6 +58,16 @@ namespace Caves_of_Chaos.UIScripts
                     MessageConsole.strings.Add("Strength: " + c.GetStrength());
                     MessageConsole.strings.Add("Dexterity: " + c.GetDexterity());
                     MessageConsole.strings.Add("");
+                    if (c.weapon != null)
+                    {
+                        MessageConsole.strings.Add("Attack Roll: " + c.weapon.damageRolls + "d" + c.weapon.damageDie
+                            + " " + c.weapon.damageType);
+                    } else
+                    {
+                        MessageConsole.strings.Add("Attack Roll: " + c.baseAttackRolls + "d" + c.baseAttackDie
+                            + " bludgeoning");
+                    }
+                    MessageConsole.strings.Add("");
                     MessageConsole.strings.Add("Movement Speed: " + c.movementSpeed);
                     MessageConsole.strings.Add("Action Speed: " + c.actionSpeed);
                     MessageConsole.strings.Add("");

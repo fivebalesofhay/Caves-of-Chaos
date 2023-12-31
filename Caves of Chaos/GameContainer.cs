@@ -125,49 +125,66 @@ namespace Caves_of_Chaos
             {
                 for (int j = topMargin; j < topMargin + GRID_CONSOLE_HEIGHT; j++)
                 {
-                    if (ModeManager.mode == ModeManager.modes.Examine && ExamineMode.pos == new Point(i,j))
+                    DrawTile(i, j, leftMargin, topMargin);
+                }
+            }
+        }
+
+        public void DrawTile(int i, int j, int leftMargin, int topMargin)
+        {
+            if (ModeManager.mode == ModeManager.modes.Examine && ExamineMode.pos == new Point(i, j))
+            {
+                gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.white, Palette.black, 'X'));
+            }
+            else if (activeGrid.GetTile(new Point(i, j)).isSeen)
+            {
+                if (activeGrid.tiles[i, j].occupant != null)
+                {
+                    gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, activeGrid.tiles[i, j].occupant.glyph);
+                }
+                else if (activeGrid.tiles[i, j].structure != null)
+                {
+                    if (activeGrid.tiles[i, j].items.Count > 0 && !activeGrid.tiles[i, j].structure.HasTag("PRIORITY"))
                     {
-                        gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.white, Palette.black, 'X'));
-                    }
-                    else if (activeGrid.GetTile(new Point(i, j)).isSeen)
-                    {
-                        if (activeGrid.tiles[i, j].occupant != null)
-                        {
-                            gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, activeGrid.tiles[i, j].occupant.glyph);
-                        } 
-                        else if (activeGrid.tiles[i, j].structure != null)
-                        {
-                            gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, activeGrid.tiles[i, j].structure.glyph);
-                        }
-                        else if (activeGrid.tiles[i, j].items.Count > 0)
-                        {
-                            gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.white, Palette.black, '%'));
-                        }
-                        else if (activeGrid.tiles[i, j].isWall)
-                        {
-                            gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.white, Palette.black, '#'));
-                        }
-                        else
-                        {
-                            gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.white, Palette.black, '.'));
-                        }
-                    } 
-                    else if (activeGrid.GetTile(new Point(i, j)).wasSeen)
-                    {
-                        if (activeGrid.tiles[i, j].isWall)
-                        {
-                            gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.lightGray, Palette.black, '#'));
-                        }
-                        else
-                        {
-                            gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.lightGray, Palette.black, '.'));
-                        }
+                        gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.white, Palette.black, '%'));
                     }
                     else
                     {
-                        gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.black));
+                        gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, activeGrid.tiles[i, j].structure.glyph);
                     }
                 }
+                else if (activeGrid.tiles[i, j].items.Count > 0)
+                {
+                    gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.white, Palette.black, '%'));
+                }
+                else if (activeGrid.tiles[i, j].isWall)
+                {
+                    gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.white, Palette.black, '#'));
+                }
+                else
+                {
+                    gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.white, Palette.black, '.'));
+                }
+            }
+            else if (activeGrid.GetTile(new Point(i, j)).wasSeen)
+            {
+                if (activeGrid.tiles[i, j].structure != null)
+                {
+                    gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.lightGray, Palette.black, 
+                        activeGrid.tiles[i, j].structure.glyph.Glyph));
+                }
+                else if (activeGrid.tiles[i, j].isWall)
+                {
+                    gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.lightGray, Palette.black, '#'));
+                }
+                else
+                {
+                    gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.lightGray, Palette.black, '.'));
+                }
+            }
+            else
+            {
+                gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.black));
             }
         }
     }

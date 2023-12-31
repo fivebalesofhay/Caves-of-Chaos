@@ -25,7 +25,8 @@ namespace Caves_of_Chaos.CreatureScripts
         public double spawnRatio;
         public int level;
         public int maxHealth;
-        public double baseAttackStrength;
+        public int baseAttackRolls;
+        public int baseAttackDie;
         public int strength;
         public int dexterity;
         public double movementSpeed;
@@ -50,7 +51,8 @@ namespace Caves_of_Chaos.CreatureScripts
             maxHealth = template.health;
             strength = template.strength; 
             dexterity = template.dexterity;
-            baseAttackStrength = template.strength;
+            baseAttackRolls = template.baseAttackRolls;
+            baseAttackDie = template.baseAttackDie;
             movementSpeed = template.movementSpeed; 
             actionSpeed = template.actionSpeed;
             tags = template.tags;
@@ -234,7 +236,7 @@ namespace Caves_of_Chaos.CreatureScripts
             int damage = 0;
             if (weapon == null)
             {
-                damage = Utility.randRoundInt(Utility.Roll(1, 4)
+                damage = Utility.randRoundInt(Utility.Roll(baseAttackRolls, baseAttackDie)
                     * Math.Pow(2, -creature.GetResistance("bludgeoning")));
             } else
             {

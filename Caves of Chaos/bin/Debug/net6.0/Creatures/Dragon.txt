@@ -9,6 +9,8 @@
   "health": 60,
   "strength": 4,
   "dexterity": 0,
+  "baseAttackRolls": 4,
+  "baseAttackDie": 5,
   "movementSpeed": 1,
   "actionSpeed": 1,
   "tags": ["AGRESSIVE"]
