@@ -39,7 +39,7 @@ namespace Caves_of_Chaos.UIScripts
                 {
                     index++;
                     container.infoConsole.Print(1, index,
-                        Utility.Capitalize(activeGrid.tiles[ExamineMode.pos.X, ExamineMode.pos.Y].items[i].name));
+                        activeGrid.tiles[ExamineMode.pos.X, ExamineMode.pos.Y].items[i].DisplayName());
                 }
             }
             else

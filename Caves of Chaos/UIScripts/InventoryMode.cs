@@ -54,10 +54,10 @@ namespace Caves_of_Chaos.UIScripts
             // Items:
             for (int i = 0; i < PlayerManager.player.inventory.Count; i++)
             {
-                ColoredString s = new ColoredString(PlayerManager.player.inventory[i].name);
+                ColoredString s = new ColoredString(PlayerManager.player.inventory[i].DisplayName());
                 if (i == selection)
                 {
-                    s = new ColoredString(PlayerManager.player.inventory[i].name, Palette.black, Palette.white);
+                    s = new ColoredString(PlayerManager.player.inventory[i].DisplayName(), Palette.black, Palette.white);
                 }
                 if (PlayerManager.player.inventory[i].equipped)
                 {
@@ -80,7 +80,7 @@ namespace Caves_of_Chaos.UIScripts
             {
                 ItemScripts.Item item = PlayerManager.player.inventory[selection];
                 MessageConsole.strings.Clear();
-                MessageConsole.strings.Add(Utility.Capitalize(item.name));
+                MessageConsole.strings.Add(Utility.Capitalize(item.DisplayName()));
                 MessageConsole.strings.Add("");
                 if (item.HasTag("WEAPON"))
                 {

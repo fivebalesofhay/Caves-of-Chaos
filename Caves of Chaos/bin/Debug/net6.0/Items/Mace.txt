@@ -1,5 +1,7 @@
 {
   "name": "mace",
+  "minDepth": 1,
+  "maxDepth": 3,
   "damageDie": 3,
   "damageRolls": 4,
   "damageType": "bludgeoning",

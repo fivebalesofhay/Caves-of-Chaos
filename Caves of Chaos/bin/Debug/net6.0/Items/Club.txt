@@ -1,5 +1,7 @@
 {
   "name": "club",
+  "minDepth": 0,
+  "maxDepth": 2,
   "damageDie": 3,
   "damageRolls": 3,
   "damageType": "bludgeoning",

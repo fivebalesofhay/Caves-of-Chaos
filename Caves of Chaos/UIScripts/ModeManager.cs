@@ -53,7 +53,7 @@ namespace Caves_of_Chaos.UIScripts
                     List<Item> itemsHere = GridManager.activeGrid.tiles[playerPos.X, playerPos.Y].items;
                     for (int i = 0; i < itemsHere.Count; i++)
                     {
-                        items.Add(itemsHere[i].name);
+                        items.Add(itemsHere[i].DisplayName());
                     }
                     DecisionConsole.list = items;
                     DecisionConsole.onSelection = i => { PlayerManager.player.GetItem(itemsHere[i]); };
@@ -67,7 +67,7 @@ namespace Caves_of_Chaos.UIScripts
                     List<Item> inventoryItems = PlayerManager.player.inventory;
                     for (int i = 0; i < inventoryItems.Count; i++)
                     {
-                        items.Add(inventoryItems[i].name);
+                        items.Add(inventoryItems[i].DisplayName());
                     }
                     DecisionConsole.list = items;
                     DecisionConsole.onSelection = i => { PlayerManager.player.EquipItem(inventoryItems[i]); };

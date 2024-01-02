@@ -1,5 +1,7 @@
 {
   "name": "warhammer",
+  "minDepth": 2,
+  "maxDepth": 4,
   "damageDie": 5,
   "damageRolls": 4,
   "damageType": "bludgeoning",

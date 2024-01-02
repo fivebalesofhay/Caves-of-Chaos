@@ -21,6 +21,7 @@ namespace Caves_of_Chaos.ItemScripts
         // Armor variables: 
         public int? armorValue;
 
+        public int enchantment = 0;
         public Point? position;
         public Boolean equipped = false;
 
@@ -38,6 +39,18 @@ namespace Caves_of_Chaos.ItemScripts
                 Point p = (Point)position;
                 grid.tiles[p.X, p.Y].items.Add(this);
             }
+        }
+
+        public String DisplayName()
+        {
+            String s = Utility.Capitalize(name);
+
+            if (enchantment > 0) 
+            {
+                s = "+" + enchantment + " " + s;
+            }
+
+            return s;
         }
 
         public Boolean HasTag(String s)

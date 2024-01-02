@@ -1,5 +1,7 @@
 {
   "name": "plate armor",
+  "minDepth": 2,
+  "maxDepth": 4,
   "armorValue": 6,
   "tags": ["ARMOR"]
 }

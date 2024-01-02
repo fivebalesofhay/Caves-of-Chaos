@@ -1,5 +1,7 @@
 {
   "name": "chain mail",
+  "minDepth": 1,
+  "maxDepth": 3,
   "armorValue": 4,
   "tags": ["ARMOR"]
 }

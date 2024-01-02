@@ -172,8 +172,16 @@ namespace Caves_of_Chaos.GridScripts
         {
             // To do: weighted item spawning
             // Prepare for deciding to spawn items
-            double totalSpawnRatio = 0.0;
+            List<ItemTemplate> levelTemplates = new List<ItemTemplate>();
             for (int i = 0; i < ItemManager.templates.Count; i++)
+            {
+                if (ItemManager.templates[i].minDepth <= depth && ItemManager.templates[i].maxDepth >= depth)
+                {
+                    levelTemplates.Add(ItemManager.templates[i]);
+                }
+            }
+            double totalSpawnRatio = 0.0;
+            for (int i = 0; i < levelTemplates.Count; i++)
             {
                 totalSpawnRatio += 1;
             }
@@ -187,7 +195,7 @@ namespace Caves_of_Chaos.GridScripts
                     {
                         double randomIndex = Program.random.NextDouble() * totalSpawnRatio;
                         int chosenIndex = 0;
-                        for (int k = 0; k < ItemManager.templates.Count; k++)
+                        for (int k = 0; k < levelTemplates.Count; k++)
                         {
                             randomIndex -= 1;
                             if (randomIndex <= 0)
@@ -196,7 +204,18 @@ namespace Caves_of_Chaos.GridScripts
                                 break;
                             }
                         }
-                        Item item = new Item(new Point(i, j), this, ItemManager.templates[chosenIndex]);
+                        Item item = new Item(new Point(i, j), this, levelTemplates[chosenIndex]);
+                        // Spawn some items enchanted:
+                        if (Program.random.NextDouble() < ENCHANTMENT_CHANCE_ONE)
+                        {
+                            item.enchantment = 1;
+                        } else if (Program.random.NextDouble() < ENCHANTMENT_CHANCE_TWO)
+                        {
+                            item.enchantment = 2;
+                        } else if (Program.random.NextDouble() < ENCHANTMENT_CHANCE_THREE)
+                        {
+                            item.enchantment = 3;
+                        }
                     }
                 }
             }

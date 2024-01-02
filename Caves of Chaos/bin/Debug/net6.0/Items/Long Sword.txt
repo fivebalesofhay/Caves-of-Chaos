@@ -1,5 +1,7 @@
 {
   "name": "long sword",
+  "minDepth": 2,
+  "maxDepth": 4,
   "damageDie": 12,
   "damageRolls": 1,
   "damageType": "slashing",

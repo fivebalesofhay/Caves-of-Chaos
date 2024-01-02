@@ -1,5 +1,7 @@
 {
   "name": "spear",
+  "minDepth": 0,
+  "maxDepth": 2,
   "damageDie": 8,
   "damageRolls": 1,
   "damageType": "piercing",

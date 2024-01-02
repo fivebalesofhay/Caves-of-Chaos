@@ -1,5 +1,7 @@
 {
   "name": "leather armor",
+  "minDepth": 0,
+  "maxDepth": 2,
   "armorValue": 2,
   "tags": ["ARMOR"]
 }

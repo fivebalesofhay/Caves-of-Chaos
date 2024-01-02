@@ -234,17 +234,23 @@ namespace Caves_of_Chaos.CreatureScripts
             }
 
             int damage = 0;
-            if (weapon == null)
-            {
-                damage = Utility.randRoundInt(Utility.Roll(baseAttackRolls, baseAttackDie)
-                    * Math.Pow(2, -creature.GetResistance("bludgeoning")));
-            } else
+            if (weapon != null)
             {
                 damage = Utility.randRoundInt(
                     Utility.Roll((int)weapon.damageRolls, (int)weapon.damageDie)
-                        * Math.Pow(2, -creature.GetResistance(weapon.damageType)));
+                    + weapon.enchantment);
+            } else
+            {
+                damage = Utility.randRoundInt(Utility.Roll(baseAttackRolls, baseAttackDie));
             }
             damage = Utility.randRoundInt(damage * (1 + strength * GameSettings.STRENGTH_DAMAGE_MULTIPLIER));
+            if (weapon != null)
+            {
+                damage = Utility.randRoundInt(damage * Math.Pow(2, -creature.GetResistance(weapon.damageType)));
+            } else
+            {
+                damage = Utility.randRoundInt(damage * Math.Pow(2, -creature.GetResistance("bludgeoning")));
+            }
             // Armor damage reduction:
             if (creature.GetArmorValue() > 0)
             {
@@ -400,7 +406,7 @@ namespace Caves_of_Chaos.CreatureScripts
             {
                 if (armor.armorValue != null)
                 {
-                    return (int)armor.armorValue;
+                    return (int)armor.armorValue + armor.enchantment;
                 }
             }
             return 0;
@@ -408,12 +414,22 @@ namespace Caves_of_Chaos.CreatureScripts
 
         public double GetAccuracy()
         {
-            return 1 + dexterity;
+            double n = 1 + dexterity;
+            if (weapon != null)
+            {
+                n += 0.5 * weapon.enchantment;
+            }
+            return n;
         }
 
         public double GetArmorPierce()
         {
-            return 3 + strength * 2;
+            double n = 3 + strength * 2;
+            if (weapon != null)
+            {
+                n += weapon.enchantment;
+            }
+            return n;
         }
 
         public Boolean HasTag(String tag)

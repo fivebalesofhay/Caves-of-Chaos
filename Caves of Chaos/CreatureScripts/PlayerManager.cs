@@ -107,7 +107,7 @@ namespace Caves_of_Chaos.CreatureScripts
             }
             else if (keyboard.IsKeyPressed(Keys.OemPeriod) && activeGrid.GetTile(player.GetPosition()).structure != null)
             {
-                if (activeGrid.GetTile(player.GetPosition()).structure.name == "down stair")
+                if (activeGrid.GetTile(player.GetPosition()).structure.HasTag("DOWN_STAIR"))
                 {
                     activeGrid.GetTile(player.GetPosition()).occupant = null;
                     activeGrid.creatures.Remove(player);
@@ -128,7 +128,7 @@ namespace Caves_of_Chaos.CreatureScripts
             }
             else if (keyboard.IsKeyPressed(Keys.OemComma) && activeGrid.GetTile(player.GetPosition()).structure != null)
             {
-                if (activeGrid.GetTile(player.GetPosition()).structure.name == "up stair")
+                if (activeGrid.GetTile(player.GetPosition()).structure.HasTag("UP_STAIR"))
                 {
                     activeGrid.GetTile(player.GetPosition()).occupant = null;
                     activeGrid.creatures.Remove(player);

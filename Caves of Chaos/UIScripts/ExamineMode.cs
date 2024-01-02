@@ -73,11 +73,11 @@ namespace Caves_of_Chaos.UIScripts
                     MessageConsole.strings.Add("");
                     if (c.weapon != null)
                     {
-                        MessageConsole.strings.Add("Wielding: " + c.weapon.name);
+                        MessageConsole.strings.Add("Wielding: " + c.weapon.DisplayName());
                     }
                     if (c.armor != null)
                     {
-                        MessageConsole.strings.Add("Wearing: " + c.armor.name);
+                        MessageConsole.strings.Add("Wearing: " + c.armor.DisplayName());
                     }
                     if (c.weapon != null || c.armor != null)
                     {

@@ -22,4 +22,9 @@
     public const double BASE_MOVEMENT_TIME = 10;
     public const double BASE_HEALING_RATE = 0.002; // In percent of max health per tu
     public const double STRENGTH_DAMAGE_MULTIPLIER = 0.1;
+
+    // Item settiings:
+    public const double ENCHANTMENT_CHANCE_ONE = 0.1;
+    public const double ENCHANTMENT_CHANCE_TWO = 0.03;
+    public const double ENCHANTMENT_CHANCE_THREE = 0.01;
 }

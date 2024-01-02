@@ -1,5 +1,7 @@
 {
   "name": "short sword",
+  "minDepth": 1,
+  "maxDepth": 3,
   "damageDie": 10,
   "damageRolls": 1,
   "damageType": "piercing",
