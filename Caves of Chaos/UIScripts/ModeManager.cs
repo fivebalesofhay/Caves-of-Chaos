@@ -60,6 +60,22 @@ namespace Caves_of_Chaos.UIScripts
                     DecisionConsole.onSelection = i => { PlayerManager.player.GetItem(itemsHere[i]); };
                     DecisionConsole.Render();
                 }
+                else if (keyboard.IsKeyPressed(Keys.D)) // Drop item:
+                {
+                    mode = modes.Decision;
+                    DecisionConsole.selection = 0;
+                    List<String> items = new List<String>();
+                    Point playerPos = PlayerManager.player.GetPosition();
+                    List<Item> inventoryItems = PlayerManager.player.inventory;
+                    for (int i = 0; i < inventoryItems.Count; i++)
+                    {
+                        items.Add(inventoryItems[i].DisplayName());
+                    }
+                    if (items.Count == 0) { mode = modes.Grid; return; }
+                    DecisionConsole.list = items;
+                    DecisionConsole.onSelection = i => { PlayerManager.player.DropItem(inventoryItems[i]); };
+                    DecisionConsole.Render();
+                }
                 else if (keyboard.IsKeyPressed(Keys.E)) // Equip item:
                 {
                     mode = modes.Decision;
