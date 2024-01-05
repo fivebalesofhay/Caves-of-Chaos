@@ -206,15 +206,19 @@ namespace Caves_of_Chaos.GridScripts
                         }
                         Item item = new Item(new Point(i, j), this, levelTemplates[chosenIndex]);
                         // Spawn some items enchanted:
-                        if (Program.random.NextDouble() < ENCHANTMENT_CHANCE_ONE)
-                        {
-                            item.enchantment = 1;
-                        } else if (Program.random.NextDouble() < ENCHANTMENT_CHANCE_TWO)
-                        {
-                            item.enchantment = 2;
-                        } else if (Program.random.NextDouble() < ENCHANTMENT_CHANCE_THREE)
-                        {
-                            item.enchantment = 3;
+                        if (item.HasTag("ARMOR") || item.HasTag("WEAPON")) {
+                            if (Program.random.NextDouble() < ENCHANTMENT_CHANCE_ONE)
+                            {
+                                item.enchantment = 1;
+                            }
+                            else if (Program.random.NextDouble() < ENCHANTMENT_CHANCE_TWO)
+                            {
+                                item.enchantment = 2;
+                            }
+                            else if (Program.random.NextDouble() < ENCHANTMENT_CHANCE_THREE)
+                            {
+                                item.enchantment = 3;
+                            }
                         }
                     }
                 }

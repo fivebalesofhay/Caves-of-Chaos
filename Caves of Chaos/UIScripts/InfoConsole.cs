@@ -50,9 +50,15 @@ namespace Caves_of_Chaos.UIScripts
                 container.infoConsole.Print(1, index, "EXP: " + exp + "/" + (player.level * player.level * EXP_COEFFICIENT));
                 index += 2;
 
-                container.infoConsole.Print(1, index, "Strength: " + player.strength);
+                container.infoConsole.Print(1, index, "Strength: " + player.GetStrength());
                 index++;
-                container.infoConsole.Print(1, index, "Dexterity: " + player.dexterity);
+                container.infoConsole.Print(1, index, "Dexterity: " + player.GetDexterity());
+                index += 2;
+
+                for (int i = 0; i < player.conditions.Count;i++)
+                {
+                    container.infoConsole.Print(1, index, player.conditions[i].condition.ToString());
+                }
             }
 
             // Redraw borders:

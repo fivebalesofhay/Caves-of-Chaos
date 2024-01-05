@@ -9,8 +9,10 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using static Caves_of_Chaos.GridScripts.GridManager;
+using  Caves_of_Chaos.ConditionScripts;
 using Caves_of_Chaos.ItemScripts;
 using System.Diagnostics;
+using System.Net.Http.Headers;
 
 namespace Caves_of_Chaos.CreatureScripts
 {
@@ -38,6 +40,7 @@ namespace Caves_of_Chaos.CreatureScripts
         public double healingOffset = 0;
         public double actionPoints = 0;
         public List<Item> inventory = new List<Item>();
+        public List<Condition> conditions = new List<Condition>();
         public Item? weapon = null;
         public Item? armor = null;
 
@@ -125,6 +128,7 @@ namespace Caves_of_Chaos.CreatureScripts
 
         public void Update()
         {
+            UpdateConditions();
             if (health < maxHealth)
             {
                 healingOffset += maxHealth * GameSettings.BASE_HEALING_RATE;
@@ -133,6 +137,18 @@ namespace Caves_of_Chaos.CreatureScripts
             {
                 health++;
                 healingOffset--;
+            }
+        }
+
+        public void UpdateConditions()
+        {
+            for (int i = conditions.Count-1; i >= 0; i--)
+            {
+                conditions[i].duration--;
+                if (conditions[i].duration <= 0)
+                {
+                    conditions.RemoveAt(i);
+                }
             }
         }
 
@@ -243,7 +259,7 @@ namespace Caves_of_Chaos.CreatureScripts
             {
                 damage = Utility.randRoundInt(Utility.Roll(baseAttackRolls, baseAttackDie));
             }
-            damage = Utility.randRoundInt(damage * (1 + strength * GameSettings.STRENGTH_DAMAGE_MULTIPLIER));
+            damage = Utility.randRoundInt(damage * (1 + GetStrength() * GameSettings.STRENGTH_DAMAGE_MULTIPLIER));
             if (weapon != null)
             {
                 damage = Utility.randRoundInt(damage * Math.Pow(2, -creature.GetResistance(weapon.damageType)));
@@ -257,9 +273,9 @@ namespace Caves_of_Chaos.CreatureScripts
                 int reduction = Program.random.Next((int)creature.GetArmorValue() + 1);
                 damage -= reduction;
                 // Strength can regain some damage
-                if (strength > 0)
+                if (GetStrength() > 0)
                 {
-                    damage += Math.Min(Program.random.Next(strength + 1), reduction);
+                    damage += Math.Min(Program.random.Next(GetStrength() + 1), reduction);
                 }
             }
             damage = Math.Max(damage, 0);
@@ -281,6 +297,15 @@ namespace Caves_of_Chaos.CreatureScripts
                 return true;
             }
             return false;
+        }
+
+        public void Heal(int amount)
+        {
+            health += amount;
+            if (health > maxHealth)
+            {
+                health = maxHealth;
+            }
         }
 
         public void Die()
@@ -346,13 +371,55 @@ namespace Caves_of_Chaos.CreatureScripts
             }
         }
 
+        public void QuaffPotion(Item p)
+        {
+            // This is like the laziest way to do this but whatever
+            if (!p.HasTag("POTION")) { return; }
+
+            if (p.HasTag("HEALING"))
+            {
+                Heal(Utility.randRoundInt(maxHealth * 0.5));
+            } else if (p.HasTag("STRENGTH"))
+            {
+                conditions.Add(new Condition(Conditions.conditions.Strong, 200));
+            }
+            else if(p.HasTag("DEXTERITY"))
+            {
+                conditions.Add(new Condition(Conditions.conditions.Agile, 200));
+            }
+            ConsumeItem(p);
+        }
+
         public void DropItem(Item item)
         {
+            if (weapon == item)
+            {
+                weapon = null;
+            }
+            if (armor == item)
+            {
+                armor = null;
+            }
             item.equipped = false;
             item.owner = null;
             inventory.Remove(item);
             item.position = position;
             activeGrid.tiles[position.X,position.Y].items.Add(item);
+        }
+
+        public void ConsumeItem(Item item)
+        {
+            if (weapon == item)
+            {
+                weapon = null;
+            }
+            if (armor == item)
+            {
+                armor = null;
+            }
+            item.equipped = false;
+            item.owner = null;
+            inventory.Remove(item);
         }
 
         public int GetResistance(String type)
@@ -371,11 +438,25 @@ namespace Caves_of_Chaos.CreatureScripts
 
         public int GetStrength()
         {
+            for (int i = 0; i < conditions.Count; i++)
+            {
+                if (conditions[i].condition == Conditions.conditions.Strong)
+                {
+                    return strength + 4;
+                }
+            }
             return strength;
         }
 
         public int GetDexterity()
         {
+            for (int i = 0; i < conditions.Count; i++)
+            {
+                if (conditions[i].condition == Conditions.conditions.Agile)
+                {
+                    return dexterity + 4;
+                }
+            }
             return dexterity;
         }
 
@@ -398,7 +479,7 @@ namespace Caves_of_Chaos.CreatureScripts
 
         public double GetDodgeValue()
         {
-            return dexterity;
+            return GetDexterity();
         }
         public double GetArmorValue()
         {
@@ -414,7 +495,7 @@ namespace Caves_of_Chaos.CreatureScripts
 
         public double GetAccuracy()
         {
-            double n = 1 + dexterity;
+            double n = 1 + GetDexterity();
             if (weapon != null)
             {
                 n += 0.5 * weapon.enchantment;
@@ -424,7 +505,7 @@ namespace Caves_of_Chaos.CreatureScripts
 
         public double GetArmorPierce()
         {
-            double n = 3 + strength * 2;
+            double n = 3 + GetStrength() * 2;
             if (weapon != null)
             {
                 n += weapon.enchantment;

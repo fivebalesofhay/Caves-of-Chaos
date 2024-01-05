@@ -1,0 +1,6 @@
+{
+  "name": "potion of healing",
+  "minDepth": 0,
+  "maxDepth": 4,
+  "tags": ["POTION", "HEALING"]
+}

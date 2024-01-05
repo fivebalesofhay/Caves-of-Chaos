@@ -1,0 +1,6 @@
+{
+  "name": "potion of strength",
+  "minDepth": 0,
+  "maxDepth": 4,
+  "tags": ["POTION", "STRENGTH"]
+}
