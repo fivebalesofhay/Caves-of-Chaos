@@ -10,6 +10,7 @@ using static Caves_of_Chaos.UIScripts.ModeManager;
 using Caves_of_Chaos.GridScripts;
 using SadConsole;
 using static Caves_of_Chaos.GridScripts.GridManager;
+using Caves_of_Chaos.CreatureScripts;
 
 namespace Caves_of_Chaos.UIScripts
 {
@@ -22,24 +23,24 @@ namespace Caves_of_Chaos.UIScripts
             {
                 int index = 0;
                 container.infoConsole.Print(1, index, "This is a " + 
-                    (activeGrid.tiles[ExamineMode.pos.X,ExamineMode.pos.Y].isWall ? "wall." : "floor."));
-                if (activeGrid.tiles[ExamineMode.pos.X, ExamineMode.pos.Y].structure != null)
+                    (PlayerManager.player.grid.tiles[ExamineMode.pos.X,ExamineMode.pos.Y].isWall ? "wall." : "floor."));
+                if (PlayerManager.player.grid.tiles[ExamineMode.pos.X, ExamineMode.pos.Y].structure != null)
                 {
                     index++;
                     container.infoConsole.Print(1, index, 
-                        Utility.Capitalize(activeGrid.tiles[ExamineMode.pos.X, ExamineMode.pos.Y].structure.name));
+                        Utility.Capitalize(PlayerManager.player.grid.tiles[ExamineMode.pos.X, ExamineMode.pos.Y].structure.name));
                 }
-                if (activeGrid.tiles[ExamineMode.pos.X, ExamineMode.pos.Y].occupant != null)
+                if (PlayerManager.player.grid.tiles[ExamineMode.pos.X, ExamineMode.pos.Y].occupant != null)
                 {
                     index++;
                     container.infoConsole.Print(1, index, 
-                        Utility.Capitalize(activeGrid.tiles[ExamineMode.pos.X, ExamineMode.pos.Y].occupant.name));
+                        Utility.Capitalize(PlayerManager.player.grid.tiles[ExamineMode.pos.X, ExamineMode.pos.Y].occupant.name));
                 }
-                for (int i = 0; i < activeGrid.tiles[ExamineMode.pos.X,ExamineMode.pos.Y].items.Count;i++)
+                for (int i = 0; i < PlayerManager.player.grid.tiles[ExamineMode.pos.X,ExamineMode.pos.Y].items.Count;i++)
                 {
                     index++;
                     container.infoConsole.Print(1, index,
-                        activeGrid.tiles[ExamineMode.pos.X, ExamineMode.pos.Y].items[i].DisplayName());
+                        PlayerManager.player.grid.tiles[ExamineMode.pos.X, ExamineMode.pos.Y].items[i].DisplayName());
                 }
             }
             else

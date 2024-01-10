@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Caves_of_Chaos.GridScripts;
 using Caves_of_Chaos.ItemScripts;
 using SadConsole.Input;
+using Caves_of_Chaos.CreatureScripts;
 
 namespace Caves_of_Chaos.UIScripts
 {
@@ -47,9 +48,9 @@ namespace Caves_of_Chaos.UIScripts
                 pos += new Point(-1, 1);
             } else if (keyboard.IsKeyPressed(Keys.Enter))
             {
-                if (GridManager.activeGrid.tiles[pos.X,pos.Y].occupant != null)
+                if (PlayerManager.player.grid.tiles[pos.X,pos.Y].occupant != null)
                 {
-                    CreatureScripts.Creature c = GridManager.activeGrid.tiles[pos.X, pos.Y].occupant;
+                    CreatureScripts.Creature c = PlayerManager.player.grid.tiles[pos.X, pos.Y].occupant;
                     MessageConsole.strings.Clear();
                     MessageConsole.strings.Add(Utility.Capitalize(c.name));
                     MessageConsole.strings.Add("");

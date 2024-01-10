@@ -12,6 +12,7 @@
 
     // Grid layout settings:
     public const int WALKER_STEPS = 500;
+    public const int STAIRS_PER_LEVEL = 5;
 
     // Player settings:
     public const int PLAYER_FOV_DISTANCE = 8;

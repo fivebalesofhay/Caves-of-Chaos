@@ -5,6 +5,5 @@
   "minDepth": 0,
   "maxDepth": 3,
   "spawnRatio": 0,
-  "minNumber": 10,
   "tags": ["PRIORITY","DOWN_STAIR"]
 }

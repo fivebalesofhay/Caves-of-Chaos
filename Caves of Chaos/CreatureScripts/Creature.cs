@@ -36,17 +36,20 @@ namespace Caves_of_Chaos.CreatureScripts
         public String[] tags;
         public Dictionary<String, int> resistances;
 
+        public Grid grid;
         public int health;
         public double healingOffset = 0;
         public double actionPoints = 0;
+        public Point? lastKnownTargetPosition = null;
         public List<Item> inventory = new List<Item>();
         public List<Condition> conditions = new List<Condition>();
         public Item? weapon = null;
         public Item? armor = null;
 
-        public Creature(Point initialPosition, Grid grid, CreatureTemplate template) 
+        public Creature(Point initialPosition, Grid initialGrid, CreatureTemplate template) 
         { 
             position = initialPosition;
+            grid = initialGrid;
             glyph = new ColoredGlyph(Palette.colors[template.color], Palette.black, template.symbol.ToCharArray()[0]);
 
             name = template.name;
@@ -159,38 +162,34 @@ namespace Caves_of_Chaos.CreatureScripts
             Point movement = new Point(0, 0);
             if (HasTag("AGRESSIVE"))
             {
-                if (activeGrid.GetTile(position).isSeen)
+                if (grid.GetTile(position).isSeen && grid == PlayerManager.player.grid)
                 {
-                    Point playerDiff = PlayerManager.player.GetPosition() - position;
-                    if (Math.Abs(playerDiff.X) == Math.Abs(playerDiff.Y)
-                        && !activeGrid.tiles[position.X + Math.Sign(playerDiff.X), position.Y + Math.Sign(playerDiff.Y)].isWall)
+                    movement = MoveTowardsPoint(PlayerManager.player.GetPosition());
+                    lastKnownTargetPosition = PlayerManager.player.GetPosition();
+                } 
+                else if (lastKnownTargetPosition != null)
+                {
+                    Debug.WriteLine(lastKnownTargetPosition);
+                    if (position == lastKnownTargetPosition)
                     {
-                        movement = new Point(Math.Sign(playerDiff.X), Math.Sign(playerDiff.Y));
-                    }
-                    else if (Math.Abs(playerDiff.X) > Math.Abs(playerDiff.Y))
-                    {
-                        if (Program.random.NextDouble() < Math.Abs(playerDiff.X / Utility.Distance(new Point(0, 0), playerDiff))
-                            && !activeGrid.tiles[position.X + Math.Sign(playerDiff.X), position.Y + Math.Sign(playerDiff.Y)].isWall)
+                        StructureScripts.Structure? s = grid.GetTile(position).structure;
+                        if (s != null)
                         {
-                            movement = new Point(Math.Sign(playerDiff.X), Math.Sign(playerDiff.Y));
-                        } else
-                        {
-                            movement = new Point(Math.Sign(playerDiff.X), 0);
+                            if (s.HasTag("UP_STAIR") || s.HasTag("DOWN_STAIR"))
+                            {
+                                UseStair(s);
+                                return GetMovementTime();
+                            }
                         }
-                    }
+                        lastKnownTargetPosition = null;
+                        movement = Utility.RandomDirection();
+                    } 
                     else
                     {
-                        if (Program.random.NextDouble() < Math.Abs(playerDiff.Y / Utility.Distance(new Point(0, 0), playerDiff))
-                            && !activeGrid.tiles[position.X + Math.Sign(playerDiff.X), position.Y + Math.Sign(playerDiff.Y)].isWall)
-                        {
-                            movement = new Point(Math.Sign(playerDiff.X), Math.Sign(playerDiff.Y));
-                        }
-                        else
-                        {
-                            movement = new Point(0, Math.Sign(playerDiff.Y));
-                        }
+                        movement = MoveTowardsPoint((Point)lastKnownTargetPosition);
                     }
-                } else
+                }
+                else
                 {
                     movement = Utility.RandomDirection();
                 }
@@ -200,8 +199,8 @@ namespace Caves_of_Chaos.CreatureScripts
             }
 
             // Don't attack anyone but the player
-            if (activeGrid.GetTile(position + movement).occupant != PlayerManager.player 
-                    && activeGrid.GetTile(position + movement).occupant != null)
+            if (grid.GetTile(position + movement).occupant != PlayerManager.player 
+                    && grid.GetTile(position + movement).occupant != null)
             {
                 return GetMovementTime();
             }
@@ -209,29 +208,130 @@ namespace Caves_of_Chaos.CreatureScripts
             return Move(movement);
         }
 
+        public Point MoveTowardsPoint(Point p)
+        {
+            Point pointDiff = p - position;
+            if (Math.Abs(pointDiff.X) == Math.Abs(pointDiff.Y)
+                && !grid.tiles[position.X + Math.Sign(pointDiff.X), position.Y + Math.Sign(pointDiff.Y)].isWall)
+            {
+                return new Point(Math.Sign(pointDiff.X), Math.Sign(pointDiff.Y));
+            }
+            else if (Math.Abs(pointDiff.X) > Math.Abs(pointDiff.Y))
+            {
+                if (Program.random.NextDouble() < Math.Abs(pointDiff.X / Utility.Distance(new Point(0, 0), pointDiff))
+                    && !grid.tiles[position.X + Math.Sign(pointDiff.X), position.Y + Math.Sign(pointDiff.Y)].isWall)
+                {
+                    return new Point(Math.Sign(pointDiff.X), Math.Sign(pointDiff.Y));
+                }
+                else
+                {
+                    return new Point(Math.Sign(pointDiff.X), 0);
+                }
+            }
+            else
+            {
+                if (Program.random.NextDouble() < Math.Abs(pointDiff.Y / Utility.Distance(new Point(0, 0), pointDiff))
+                    && !grid.tiles[position.X + Math.Sign(pointDiff.X), position.Y + Math.Sign(pointDiff.Y)].isWall)
+                {
+                    return new Point(Math.Sign(pointDiff.X), Math.Sign(pointDiff.Y));
+                }
+                else
+                {
+                    return new Point(0, Math.Sign(pointDiff.Y));
+                }
+            }
+        }
+
         public double Move(Point direction)
         {
             if (direction == new Point(0, 0)) return 0;
             Point newPosition = position + direction;
-            if (activeGrid.GetTile(newPosition).isWall) { return 0; }
-            if (activeGrid.GetTile(newPosition).occupant != null)
+            if (grid.GetTile(newPosition).isWall) { return 0; }
+            if (grid.GetTile(newPosition).occupant != null)
             {
-                Attack(activeGrid.GetTile(newPosition).occupant);
+                Attack(grid.GetTile(newPosition).occupant);
                 return GetAttackTime();
             }
-            activeGrid.GetTile(position).occupant = null;
+            grid.GetTile(position).occupant = null;
             position = newPosition;
-            activeGrid.GetTile(position).occupant = this;
+            grid.GetTile(position).occupant = this;
             return GetMovementTime();
         }
         
         public void MoveTo(Point location)
         {
-            if (activeGrid.GetTile(location).isWall) { return; }
-            if (activeGrid.GetTile(location).occupant != null) { return; }
-            activeGrid.GetTile(position).occupant = null;
+            if (grid.GetTile(location).isWall) { return; }
+            if (grid.GetTile(location).occupant != null) { return; }
+            grid.GetTile(position).occupant = null;
             position = location;
-            activeGrid.GetTile(position).occupant = this;
+            grid.GetTile(position).occupant = this;
+        }
+
+        public void UseStair(StructureScripts.Structure stair)
+        {
+            int change = 1;
+            if (stair.HasTag("UP_STAIR"))
+            {
+                change = -1;
+            }
+
+            // Cancel if a monster tries to use the stair but is blocked by another
+            if (stair.linkedStair != null)
+            {
+                Creature? c = grids[grid.depth + change].GetTile(stair.linkedStair.GetPosition()).occupant;
+                if (c != null)
+                {
+                    if (!c.Push())
+                    {
+                        return;
+                    }
+                    if (c == PlayerManager.player)
+                    {
+                        LogConsole.UpdateLog("You are pushed aside.");
+                    }
+                }
+            }
+
+            grid.GetTile(position).occupant = null;
+            grid.creatures.Remove(this);
+            grid = grids[grid.depth + change];
+
+            Point point;
+
+            if (stair.linkedStair != null)
+            {
+                point = stair.linkedStair.GetPosition();
+            }
+            else
+            {
+                point = Utility.RandomPoint(grid);
+
+                while (grid.GetTile(point).isWall == true
+                    || grid.GetTile(point).occupant != null)
+                {
+                    point = Utility.RandomPoint(grid);
+                }
+            }
+
+            MoveTo(point);
+            grid.GetTile(position).occupant = this;
+            grid.creatures.Add(this);
+        }
+
+        public bool Push()
+        {
+            Point[] directions = Utility.Shuffle<Point>(Utility.directions);
+            for (int i = 0; i < directions.Length; i++)
+            {
+                Point newPosition = position + directions[i];
+                if (grid.GetTile(newPosition).isWall || grid.GetTile(newPosition).occupant != null) 
+                {
+                    continue;
+                }
+                Move(directions[i]);
+                return true;
+            }
+            return false;
         }
 
         public void Attack(Creature creature)
@@ -310,8 +410,8 @@ namespace Caves_of_Chaos.CreatureScripts
 
         public void Die()
         {
-            activeGrid.creatures.Remove(this);
-            activeGrid.GetTile(position).occupant = null;
+            grid.creatures.Remove(this);
+            grid.GetTile(position).occupant = null;
             for (int i = inventory.Count-1; i >= 0; i--)
             {
                 DropItem(inventory[i]);
@@ -342,7 +442,7 @@ namespace Caves_of_Chaos.CreatureScripts
             item.owner = this;
             if (item.position == null) { return; }
             Point pos = (Point)item.position;
-            activeGrid.tiles[pos.X, pos.Y].items.Remove(item);
+            grid.tiles[pos.X, pos.Y].items.Remove(item);
             item.position = null;
         }
 
@@ -404,7 +504,7 @@ namespace Caves_of_Chaos.CreatureScripts
             item.owner = null;
             inventory.Remove(item);
             item.position = position;
-            activeGrid.tiles[position.X,position.Y].items.Add(item);
+            grid.tiles[position.X,position.Y].items.Add(item);
         }
 
         public void ConsumeItem(Item item)

@@ -10,6 +10,7 @@ using static Caves_of_Chaos.GridScripts.GridManager;
 using static GameSettings;
 using Caves_of_Chaos.ItemScripts;
 using Caves_of_Chaos.UIScripts;
+using Caves_of_Chaos.StructureScripts;
 
 namespace Caves_of_Chaos.CreatureScripts
 {
@@ -27,21 +28,22 @@ namespace Caves_of_Chaos.CreatureScripts
             playerTemplate.color = "white";
             playerTemplate.level = 1;
             playerTemplate.health = 12;
-            playerTemplate.strength = 0;
-            playerTemplate.dexterity = 0;
+            playerTemplate.strength = 10;
+            playerTemplate.dexterity = 10;
             playerTemplate.movementSpeed = 1;
             playerTemplate.actionSpeed = 1;
             playerTemplate.tags = new String[0];
 
-            Point point = Utility.RandomPoint();
+            Grid initialGrid = grids[0];
+            Point point = Utility.RandomPoint(initialGrid);
 
-            while (activeGrid.GetTile(point).isWall == true
-                || activeGrid.GetTile(point).occupant != null)
+            while (initialGrid.GetTile(point).isWall == true
+                || initialGrid.GetTile(point).occupant != null)
             {
-                point = Utility.RandomPoint();
+                point = Utility.RandomPoint(initialGrid);
             }
 
-            player = new Creature(point, activeGrid, playerTemplate);
+            player = new Creature(point, initialGrid, playerTemplate);
 
             Item club = new Item(null, null, ItemManager.GetTemplate("club"));
             player.EquipItem(club);
@@ -69,6 +71,7 @@ namespace Caves_of_Chaos.CreatureScripts
 
         public static void HandleInput(Keyboard keyboard)
         {
+            Structure stair = player.grid.GetTile(player.GetPosition()).structure;
             if (keyboard.IsKeyPressed(Keys.Up) || keyboard.IsKeyPressed(Keys.NumPad8))
             {
                 player.actionPoints -= player.Move(new Point(0, -1));
@@ -105,57 +108,31 @@ namespace Caves_of_Chaos.CreatureScripts
             {
                 player.actionPoints -= Math.Min(10, player.GetMovementTime());
             }
-            else if (keyboard.IsKeyPressed(Keys.OemPeriod) && activeGrid.GetTile(player.GetPosition()).structure != null)
+            else if (keyboard.IsKeyPressed(Keys.OemPeriod) && stair != null)
             {
-                if (activeGrid.GetTile(player.GetPosition()).structure.HasTag("DOWN_STAIR"))
+                if (stair.HasTag("DOWN_STAIR"))
                 {
-                    activeGrid.GetTile(player.GetPosition()).occupant = null;
-                    activeGrid.creatures.Remove(player);
-                    activeGrid = grids[activeGrid.depth + 1];
-
-                    Point point = Utility.RandomPoint();
-
-                    while (activeGrid.GetTile(point).isWall == true
-                        || activeGrid.GetTile(point).occupant != null)
-                    {
-                        point = Utility.RandomPoint();
-                    }
-
-                    player.MoveTo(point);
-                    activeGrid.GetTile(player.GetPosition()).occupant = player;
-                    activeGrid.creatures.Add(player);
+                    player.UseStair(stair);
+                    player.actionPoints -= player.GetMovementTime();
                 }
             }
-            else if (keyboard.IsKeyPressed(Keys.OemComma) && activeGrid.GetTile(player.GetPosition()).structure != null)
+            else if (keyboard.IsKeyPressed(Keys.OemComma) && stair != null)
             {
-                if (activeGrid.GetTile(player.GetPosition()).structure.HasTag("UP_STAIR"))
+                if (stair.HasTag("UP_STAIR"))
                 {
-                    activeGrid.GetTile(player.GetPosition()).occupant = null;
-                    activeGrid.creatures.Remove(player);
-                    activeGrid = grids[activeGrid.depth - 1];
-
-                    Point point = Utility.RandomPoint();
-
-                    while (activeGrid.GetTile(point).isWall == true
-                        || activeGrid.GetTile(point).occupant != null)
-                    {
-                        point = Utility.RandomPoint();
-                    }
-
-                    player.MoveTo(point);
-                    activeGrid.GetTile(player.GetPosition()).occupant = player;
-                    activeGrid.creatures.Add(player);
+                    player.UseStair(stair);
+                    player.actionPoints -= player.GetMovementTime();
                 }
             }
 
             // Field of View:
-            for (int i = 0; i < activeGrid.tiles.GetLength(0); i++)
+            for (int i = 0; i < player.grid.tiles.GetLength(0); i++)
             {
-                for (int j = 0; j < activeGrid.tiles.GetLength(1); j++)
+                for (int j = 0; j < player.grid.tiles.GetLength(1); j++)
                 {
-                    if (activeGrid.GetTile(new Point(i, j)).isSeen) {
-                        activeGrid.GetTile(new Point(i, j)).isSeen = false;
-                        activeGrid.GetTile(new Point(i, j)).wasSeen = true;
+                    if (player.grid.GetTile(new Point(i, j)).isSeen) {
+                        player.grid.GetTile(new Point(i, j)).isSeen = false;
+                        player.grid.GetTile(new Point(i, j)).wasSeen = true;
                     }
                 }
             }
@@ -168,8 +145,8 @@ namespace Caves_of_Chaos.CreatureScripts
                     List<Point> line = Utility.Line(point, player.GetPosition());
                     for (int k = 0; k < line.Count; k++)
                     {
-                        activeGrid.GetTile(line[k]).isSeen = true;
-                        if (activeGrid.GetTile(line[k]).isWall)
+                        player.grid.GetTile(line[k]).isSeen = true;
+                        if (player.grid.GetTile(line[k]).isWall)
                         {
                             break;
                         }

@@ -16,6 +16,8 @@ namespace Caves_of_Chaos.StructureScripts
         public String name;
         public String[] tags;
 
+        public Structure? linkedStair = null;
+
         public Structure(Point initialPosition, Grid grid, StructureTemplate template)
         {
             if (template.backgroundColor == null)
@@ -41,6 +43,11 @@ namespace Caves_of_Chaos.StructureScripts
             {
                 Grow((int)template.growth, grid);
             }
+        }
+
+        public Point GetPosition()
+        {
+            return position;
         }
 
         public Boolean HasTag(String s)

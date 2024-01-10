@@ -4,7 +4,7 @@
   "symbolIndex": 250,
   "color": "lightBlue",
   "minDepth": 1,
-  "maxDepth": 1,
+  "maxDepth": 4,
   "spawnRatio": 1,
   "minNumber": 0,
   "growth": 10

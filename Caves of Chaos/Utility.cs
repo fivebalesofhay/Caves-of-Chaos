@@ -12,6 +12,13 @@ namespace Caves_of_Chaos
 {
     public static class Utility
     {
+        public static Point[] directions =
+        {
+            new Point(1,-1),new Point(1,0),new Point(1,1),
+            new Point(0,-1),new Point(0,1),
+            new Point(-1,-1),new Point(-1,0),new Point(-1,1)
+        };
+
         public static Point RandomDirection()
         {
             Point direction = new Point(0, 0);
@@ -26,9 +33,9 @@ namespace Caves_of_Chaos
             return direction;
         }
 
-        public static Point RandomPoint()
+        public static Point RandomPoint(GridScripts.Grid grid)
         {
-            return new Point(Program.random.Next(activeGrid.width), Program.random.Next(activeGrid.height));
+            return new Point(Program.random.Next(grid.width), Program.random.Next(grid.height));
         }
 
         public static double Distance(Point p1, Point p2)
@@ -89,6 +96,20 @@ namespace Caves_of_Chaos
                 total += Program.random.Next(1, die + 1);
             }
             return total;
+        }
+
+        public static T[] Shuffle<T>(T[] array)
+        {
+            T[] arrayToReturn = (T[])array.Clone();
+            int n = array.Length;
+            while (n > 1)
+            {
+                int k = Program.random.Next(n--);
+                T temp = arrayToReturn[n];
+                arrayToReturn[n] = arrayToReturn[k];
+                arrayToReturn[k] = temp;
+            }
+            return arrayToReturn;
         }
     }
 }

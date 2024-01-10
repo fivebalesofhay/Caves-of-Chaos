@@ -9,6 +9,7 @@ using System.Text.Json;
 using System.Collections;
 using Caves_of_Chaos.StructureScripts;
 using Caves_of_Chaos.ItemScripts;
+using System.Diagnostics;
 
 namespace Caves_of_Chaos.GridScripts
 {
@@ -18,6 +19,8 @@ namespace Caves_of_Chaos.GridScripts
         public Tile[,] tiles;
         // Default tile (used to block movement off edge of map):
         public Tile defaultTile = new Tile(-1,-1);
+        public Point[] upStairPositions = new Point[STAIRS_PER_LEVEL];
+        public Point[] downStairPositions = new Point[STAIRS_PER_LEVEL];
 
         public List<Creature> creatures = new List<Creature>();
 
@@ -87,20 +90,48 @@ namespace Caves_of_Chaos.GridScripts
                 templates.Add(template);
             }
 
-            // Prepare for deciding to create structures, create minimum number of structures
+            // Prepare for deciding to create structures
             double totalSpawnRatio = 0.0;
             for (int i = 0; i < templates.Count; i++)
             {
                 totalSpawnRatio += templates[i].spawnRatio;
+            }
 
-                for (int j = 0; j < templates[i].minNumber; j++)
+            // Special generation for stairs
+            int upStair = 0;
+            int downStair = 0;
+            for (int i = 0; i < templates.Count; i++)
+            {
+                if (templates[i].name == "up stair")
+                {
+                    upStair = i;
+                }
+                if (templates[i].name == "down stair")
+                {
+                    downStair = i;
+                }
+            }
+            for (int i = 0; i < STAIRS_PER_LEVEL; i++)
+            {
+                if (depth > 0)
                 {
                     Point point = new Point(Program.random.Next(width), Program.random.Next(height));
                     while (tiles[point.X, point.Y].structure != null || tiles[point.X, point.Y].isWall)
                     {
                         point = new Point(Program.random.Next(width), Program.random.Next(height));
                     }
-                    Structure structure = new Structure(point, this, templates[i]);
+                    Structure structure = new Structure(point, this, templates[upStair]);
+                    upStairPositions[i] = point;
+                }
+                if (depth < GridManager.gridCount-1)
+                {
+                    Point point = new Point(Program.random.Next(width), Program.random.Next(height));
+                    while (tiles[point.X, point.Y].structure != null || tiles[point.X, point.Y].isWall)
+                    {
+                        point = new Point(Program.random.Next(width), Program.random.Next(height));
+                    }
+                    Structure structure = new Structure(point, this, templates[downStair]);
+                    downStairPositions[i] = point;
                 }
             }
 

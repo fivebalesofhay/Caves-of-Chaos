@@ -108,17 +108,17 @@ namespace Caves_of_Chaos
             {
                 leftMargin = 0;
             }
-            if (leftMargin + GRID_CONSOLE_WIDTH > activeGrid.width)
+            if (leftMargin + GRID_CONSOLE_WIDTH > PlayerManager.player.grid.width)
             {
-                leftMargin = activeGrid.width - GRID_CONSOLE_WIDTH;
+                leftMargin = PlayerManager.player.grid.width - GRID_CONSOLE_WIDTH;
             }
             if (topMargin < 0)
             {
                 topMargin = 0;
             }
-            if (topMargin + GRID_CONSOLE_HEIGHT > activeGrid.height)
+            if (topMargin + GRID_CONSOLE_HEIGHT > PlayerManager.player.grid.height)
             {
-                topMargin = activeGrid.height - GRID_CONSOLE_HEIGHT;
+                topMargin = PlayerManager.player.grid.height - GRID_CONSOLE_HEIGHT;
             }
 
             for (int i = leftMargin; i < leftMargin + GRID_CONSOLE_WIDTH; i++)
@@ -136,28 +136,28 @@ namespace Caves_of_Chaos
             {
                 gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.white, Palette.black, 'X'));
             }
-            else if (activeGrid.GetTile(new Point(i, j)).isSeen)
+            else if (PlayerManager.player.grid.GetTile(new Point(i, j)).isSeen)
             {
-                if (activeGrid.tiles[i, j].occupant != null)
+                if (PlayerManager.player.grid.tiles[i, j].occupant != null)
                 {
-                    gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, activeGrid.tiles[i, j].occupant.glyph);
+                    gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, PlayerManager.player.grid.tiles[i, j].occupant.glyph);
                 }
-                else if (activeGrid.tiles[i, j].structure != null)
+                else if (PlayerManager.player.grid.tiles[i, j].structure != null)
                 {
-                    if (activeGrid.tiles[i, j].items.Count > 0 && !activeGrid.tiles[i, j].structure.HasTag("PRIORITY"))
+                    if (PlayerManager.player.grid.tiles[i, j].items.Count > 0 && !PlayerManager.player.grid.tiles[i, j].structure.HasTag("PRIORITY"))
                     {
                         gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.white, Palette.black, '%'));
                     }
                     else
                     {
-                        gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, activeGrid.tiles[i, j].structure.glyph);
+                        gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, PlayerManager.player.grid.tiles[i, j].structure.glyph);
                     }
                 }
-                else if (activeGrid.tiles[i, j].items.Count > 0)
+                else if (PlayerManager.player.grid.tiles[i, j].items.Count > 0)
                 {
                     gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.white, Palette.black, '%'));
                 }
-                else if (activeGrid.tiles[i, j].isWall)
+                else if (PlayerManager.player.grid.tiles[i, j].isWall)
                 {
                     gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.white, Palette.black, '#'));
                 }
@@ -166,14 +166,14 @@ namespace Caves_of_Chaos
                     gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.white, Palette.black, '.'));
                 }
             }
-            else if (activeGrid.GetTile(new Point(i, j)).wasSeen)
+            else if (PlayerManager.player.grid.GetTile(new Point(i, j)).wasSeen)
             {
-                if (activeGrid.tiles[i, j].structure != null)
+                if (PlayerManager.player.grid.tiles[i, j].structure != null)
                 {
                     gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.lightGray, Palette.black, 
-                        activeGrid.tiles[i, j].structure.glyph.Glyph));
+                        PlayerManager.player.grid.tiles[i, j].structure.glyph.Glyph));
                 }
-                else if (activeGrid.tiles[i, j].isWall)
+                else if (PlayerManager.player.grid.tiles[i, j].isWall)
                 {
                     gridConsole.SetCellAppearance(i - leftMargin, j - topMargin, new ColoredGlyph(Palette.lightGray, Palette.black, '#'));
                 }

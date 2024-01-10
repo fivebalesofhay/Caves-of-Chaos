@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -31,15 +32,47 @@ namespace Caves_of_Chaos.CreatureScripts
 
         public static void UpdateCreatures()
         {
-            for (int i = activeGrid.creatures.Count() - 1; i >= 0; i--)
+            for (int i = PlayerManager.player.grid.creatures.Count() - 1; i >= 0; i--)
             {
-                Creature creature = activeGrid.creatures[i];
+                Creature creature = PlayerManager.player.grid.creatures[i];
                 creature.actionPoints++;
                 creature.Update();
                 if (creature == PlayerManager.player) continue;
                 if (creature.actionPoints >= 0) {
                     creature.actionPoints = 0;
                     creature.actionPoints -= creature.Act();
+                }
+            }
+            
+            if (PlayerManager.player.grid.depth > 0)
+            {
+                for (int i = grids[PlayerManager.player.grid.depth-1].creatures.Count() - 1; i >= 0; i--)
+                {
+                    Creature creature = grids[PlayerManager.player.grid.depth-1].creatures[i];
+                    creature.actionPoints++;
+                    creature.Update();
+                    if (creature == PlayerManager.player) continue;
+                    if (creature.actionPoints >= 0)
+                    {
+                        creature.actionPoints = 0;
+                        creature.actionPoints -= creature.Act();
+                    }
+                }
+            }
+
+            if (PlayerManager.player.grid.depth < grids.Count-1)
+            {
+                for (int i = grids[PlayerManager.player.grid.depth + 1].creatures.Count() - 1; i >= 0; i--)
+                {
+                    Creature creature = grids[PlayerManager.player.grid.depth + 1].creatures[i];
+                    creature.actionPoints++;
+                    creature.Update();
+                    if (creature == PlayerManager.player) continue;
+                    if (creature.actionPoints >= 0)
+                    {
+                        creature.actionPoints = 0;
+                        creature.actionPoints -= creature.Act();
+                    }
                 }
             }
         }

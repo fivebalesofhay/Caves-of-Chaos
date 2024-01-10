@@ -50,7 +50,7 @@ namespace Caves_of_Chaos.UIScripts
                     DecisionConsole.selection = 0;
                     List<String> items = new List<String>();
                     Point playerPos = PlayerManager.player.GetPosition();
-                    List<Item> itemsHere = GridManager.activeGrid.tiles[playerPos.X, playerPos.Y].items;
+                    List<Item> itemsHere = PlayerManager.player.grid.tiles[playerPos.X, playerPos.Y].items;
                     for (int i = 0; i < itemsHere.Count; i++)
                     {
                         items.Add(itemsHere[i].DisplayName());
@@ -82,13 +82,18 @@ namespace Caves_of_Chaos.UIScripts
                     DecisionConsole.selection = 0;
                     List<String> items = new List<String>();
                     List<Item> inventoryItems = PlayerManager.player.inventory;
+                    List<Item> equippableItems = new List<Item>();
                     for (int i = 0; i < inventoryItems.Count; i++)
                     {
-                        items.Add(inventoryItems[i].DisplayName());
+                        if (inventoryItems[i].HasTag("ARMOR") || inventoryItems[i].HasTag("WEAPON"))
+                        {
+                            items.Add(inventoryItems[i].DisplayName());
+                            equippableItems.Add(inventoryItems[i]);
+                        }
                     }
                     if (items.Count == 0) { mode = modes.Grid; return; }
                     DecisionConsole.list = items;
-                    DecisionConsole.onSelection = i => { PlayerManager.player.EquipItem(inventoryItems[i]); };
+                    DecisionConsole.onSelection = i => { PlayerManager.player.EquipItem(equippableItems[i]); };
                     DecisionConsole.Render();
                 } 
                 else if (keyboard.IsKeyPressed(Keys.Q)) // Quaff potion:
