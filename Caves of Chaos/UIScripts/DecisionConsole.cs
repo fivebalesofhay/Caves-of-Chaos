@@ -17,6 +17,7 @@ namespace Caves_of_Chaos.UIScripts
     public static class DecisionConsole
     {
         public static int selection = 0;
+        public static String? title = null;
         public static List<String> list = new List<String>();
         public static Action<int> onSelection = i => { };
 
@@ -57,6 +58,14 @@ namespace Caves_of_Chaos.UIScripts
                 }
             }
 
+            int offset = 1;
+            if (title != null)
+            {
+                container.smallScreenConsole.Print(1, 1, title);
+                offset = 3;
+            }
+
+
             // Items:
             for (int i = 0; i < list.Count; i++)
             {
@@ -65,7 +74,7 @@ namespace Caves_of_Chaos.UIScripts
                 {
                     s = new ColoredString(list[i], Palette.black, Palette.white);
                 }
-                container.smallScreenConsole.Print(1, i + 1, s);
+                container.smallScreenConsole.Print(1, i + offset, s);
             }
         }
 

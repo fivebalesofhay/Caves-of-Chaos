@@ -12,6 +12,7 @@ namespace Caves_of_Chaos.ItemScripts
     {
         public Creature? owner = null;
         public String name;
+        public String? description;
         public String[] tags;
         // Weapon variables:
         public int? damageDie;
@@ -26,7 +27,8 @@ namespace Caves_of_Chaos.ItemScripts
         public Boolean equipped = false;
 
         public Item(Point? initialPosition, Grid? grid, ItemTemplate template) { 
-            name = template.name; 
+            name = template.name;
+            description = template.description;
             tags = template.tags;
             damageDie = template.damageDie;
             damageRolls = template.damageRolls;

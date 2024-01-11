@@ -49,9 +49,17 @@ namespace Caves_of_Chaos.UIScripts
                 }
             }
 
+            int offset = 1;
             for (int i = 0; i < strings.Count; i++)
             {
-                container.smallScreenConsole.Print(1, i + 1, strings[i]);
+                for (int j = 0; j < strings[i].Length; j++)
+                {
+                    container.smallScreenConsole.Print(j % (SMALL_SCREEN_WIDTH-2) + 1, i + offset, strings[i].Substring(j,1));
+                    if (j % (SMALL_SCREEN_WIDTH-3) == 0 && j != 0)
+                    {
+                        offset++;
+                    }
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 {
   "name": "potion of dexterity",
+  "description": "Increases dexterity by 4 for a short duration.",
   "minDepth": 0,
   "maxDepth": 4,
   "tags": ["POTION", "DEXTERITY"]

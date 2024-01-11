@@ -48,6 +48,7 @@ namespace Caves_of_Chaos.UIScripts
                 {
                     mode = modes.Decision;
                     DecisionConsole.selection = 0;
+                    DecisionConsole.title = null;
                     List<String> items = new List<String>();
                     Point playerPos = PlayerManager.player.GetPosition();
                     List<Item> itemsHere = PlayerManager.player.grid.tiles[playerPos.X, playerPos.Y].items;
@@ -64,6 +65,7 @@ namespace Caves_of_Chaos.UIScripts
                 {
                     mode = modes.Decision;
                     DecisionConsole.selection = 0;
+                    DecisionConsole.title = null;
                     List<String> items = new List<String>();
                     Point playerPos = PlayerManager.player.GetPosition();
                     List<Item> inventoryItems = PlayerManager.player.inventory;
@@ -80,6 +82,7 @@ namespace Caves_of_Chaos.UIScripts
                 {
                     mode = modes.Decision;
                     DecisionConsole.selection = 0;
+                    DecisionConsole.title = null;
                     List<String> items = new List<String>();
                     List<Item> inventoryItems = PlayerManager.player.inventory;
                     List<Item> equippableItems = new List<Item>();
@@ -100,6 +103,7 @@ namespace Caves_of_Chaos.UIScripts
                 {
                     mode = modes.Decision;
                     DecisionConsole.selection = 0;
+                    DecisionConsole.title = null;
                     List<String> items = new List<String>();
                     List<Item> inventoryItems = PlayerManager.player.inventory;
                     List<Item> potions = new List<Item>();
@@ -176,6 +180,7 @@ namespace Caves_of_Chaos.UIScripts
             mode = modes.Decision;
             mustMakeDecision = true;
             DecisionConsole.selection = 0;
+            DecisionConsole.title = "Choose a stat to increase:";
             List<String> stats = new List<String>();
             stats.Add("Strength");
             stats.Add("Dexterity");

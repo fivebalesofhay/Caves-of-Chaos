@@ -1,5 +1,6 @@
 {
   "name": "potion of healing",
+  "description": "Heals half of your health.",
   "minDepth": 0,
   "maxDepth": 4,
   "tags": ["POTION", "HEALING"]

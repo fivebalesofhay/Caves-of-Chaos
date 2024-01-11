@@ -82,6 +82,11 @@ namespace Caves_of_Chaos.UIScripts
                 MessageConsole.strings.Clear();
                 MessageConsole.strings.Add(Utility.Capitalize(item.DisplayName()));
                 MessageConsole.strings.Add("");
+                if (item.description != null)
+                {
+                    MessageConsole.strings.Add(item.description);
+                    MessageConsole.strings.Add("");
+                }
                 if (item.HasTag("WEAPON"))
                 {
                     MessageConsole.strings.Add("Damage: " + item.damageRolls + "d" + item.damageDie);
