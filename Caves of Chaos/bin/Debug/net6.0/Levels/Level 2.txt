@@ -4,5 +4,7 @@
   "height": 60,
   "creatureDensity": 0.02,
   "structureDensity": 0.005,
-  "itemDensity": 0.01
+  "itemDensity": 0.01,
+  "creatures": ["orc", "kobold", "skeleton"],
+  "creatureSpawnRatios": [1,1,0.5,0.5]
 }

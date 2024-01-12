@@ -169,7 +169,6 @@ namespace Caves_of_Chaos.CreatureScripts
                 } 
                 else if (lastKnownTargetPosition != null)
                 {
-                    Debug.WriteLine(lastKnownTargetPosition);
                     if (position == lastKnownTargetPosition)
                     {
                         StructureScripts.Structure? s = grid.GetTile(position).structure;

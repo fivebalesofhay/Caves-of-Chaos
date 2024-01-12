@@ -12,9 +12,7 @@ namespace Caves_of_Chaos.CreatureScripts
         public String name { get; set; } = "";
         public String symbol { get; set; } = "?";
         public String color { get; set; } = "white";
-        public int minDepth { get; set; }
-        public int maxDepth { get; set; }
-        public double spawnRatio { get; set; }
+        public double spawnRatio { get; set; } = 0;
         public int level { get; set; }
         public int health { get; set; }
         public int strength { get; set; }

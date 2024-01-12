@@ -15,12 +15,12 @@ namespace Caves_of_Chaos.ItemScripts
         public String? description;
         public String[] tags;
         // Weapon variables:
-        public int? damageDie;
-        public int? damageRolls;
-        public String? damageType;
-        public int? attackTime;
+        public int damageDie;
+        public int damageRolls;
+        public String damageType;
+        public int attackTime;
         // Armor variables: 
-        public int? armorValue;
+        public int armorValue;
 
         public int enchantment = 0;
         public Point? position;

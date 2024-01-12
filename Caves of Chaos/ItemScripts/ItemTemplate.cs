@@ -12,11 +12,11 @@ namespace Caves_of_Chaos.ItemScripts
         public String? description { get; set; }
         public int minDepth { get; set; }
         public int maxDepth { get; set; }
-        public int? damageDie { get; set; }
-        public int? damageRolls { get; set; }
-        public String? damageType { get; set; }
-        public int? attackTime { get; set; }
-        public int? armorValue { get; set; }
+        public int damageDie { get; set; } = 4;
+        public int damageRolls { get; set; } = 1;
+        public String damageType { get; set; } = "bludgeoning";
+        public int attackTime { get; set; } = 1;
+        public int armorValue { get; set; } = 0;
         public String[] tags { get; set; } = { };
     }
 }

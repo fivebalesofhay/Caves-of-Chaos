@@ -14,5 +14,7 @@ namespace Caves_of_Chaos.GridScripts
         public double creatureDensity { get; set; }
         public double structureDensity { get; set; }
         public double itemDensity { get; set; }
+        public String[] creatures { get; set; } = { };
+        public double[] creatureSpawnRatios { get; set; } = { };
     }
 }

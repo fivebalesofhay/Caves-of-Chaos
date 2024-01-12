@@ -30,6 +30,8 @@ namespace Caves_of_Chaos.GridScripts
         public readonly double creatureDensity;
         public readonly double structureDensity;
         public readonly double itemDensity;
+        public readonly String[] creatureTypes;
+        public readonly double[] creatureSpawnRatios;
 
         public Grid(GridTemplate template)
         {
@@ -39,6 +41,8 @@ namespace Caves_of_Chaos.GridScripts
             creatureDensity = template.creatureDensity;
             structureDensity = template.structureDensity;
             itemDensity = template.itemDensity;
+            creatureTypes = template.creatures;
+            creatureSpawnRatios = template.creatureSpawnRatios;
 
             tiles = new Tile[width, height];
 
@@ -163,13 +167,25 @@ namespace Caves_of_Chaos.GridScripts
         {
             // Prepare for deciding to spawn creatures
             List<CreatureTemplate> levelTemplates = new List<CreatureTemplate>();
-            for (int i = 0; i < CreatureManager.templates.Count; i++)
+            for (int i = 0; i < creatureTypes.Length; i++)
             {
-                if (CreatureManager.templates[i].minDepth <= depth && CreatureManager.templates[i].maxDepth >= depth)
+                bool found = false;
+                for (int j = 0; j < CreatureManager.templates.Count; j++)
                 {
-                    levelTemplates.Add(CreatureManager.templates[i]);
+                    if (creatureTypes[i] == CreatureManager.templates[j].name)
+                    {
+                        levelTemplates.Add(CreatureManager.templates[j]);
+                        levelTemplates[i].spawnRatio = creatureSpawnRatios[i];
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                {
+                    Debug.WriteLine("Creature template not found");
                 }
             }
+            Debug.WriteLine(levelTemplates.Count);
             double totalSpawnRatio = 0.0;
             for (int i = 0; i < levelTemplates.Count; i++)
             {
