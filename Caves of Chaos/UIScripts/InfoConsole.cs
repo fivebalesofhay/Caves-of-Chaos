@@ -48,7 +48,7 @@ namespace Caves_of_Chaos.UIScripts
                 int index = 0;
                 container.infoConsole.Print(1, index, "Health: " + player.health);
                 index++;
-                container.infoConsole.Print(1, index, "EXP: " + exp + "/" + (player.level * player.level * EXP_COEFFICIENT));
+                container.infoConsole.Print(1, index, "EXP: " + exp + "/" + ((player.level + 1) * (player.level + 1) * EXP_COEFFICIENT));
                 index += 2;
 
                 container.infoConsole.Print(1, index, "Strength: " + player.GetStrength());
@@ -59,6 +59,7 @@ namespace Caves_of_Chaos.UIScripts
                 for (int i = 0; i < player.conditions.Count;i++)
                 {
                     container.infoConsole.Print(1, index, player.conditions[i].condition.ToString());
+                    index++;
                 }
             }
 

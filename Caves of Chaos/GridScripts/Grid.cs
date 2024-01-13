@@ -185,7 +185,6 @@ namespace Caves_of_Chaos.GridScripts
                     Debug.WriteLine("Creature template not found");
                 }
             }
-            Debug.WriteLine(levelTemplates.Count);
             double totalSpawnRatio = 0.0;
             for (int i = 0; i < levelTemplates.Count; i++)
             {
@@ -212,6 +211,17 @@ namespace Caves_of_Chaos.GridScripts
                         Creature creature = new Creature(new Point(i, j), this, levelTemplates[chosenIndex]);
                     }
                 }
+            }
+            
+            if (depth == GridManager.gridCount - 1)
+            {
+                CreatureTemplate dragonTemplate = CreatureManager.GetTemplate("dragon");
+                Point pos = Utility.RandomPoint(this);
+                while (GetTile(pos).occupant != null || GetTile(pos).isWall)
+                {
+                    pos = Utility.RandomPoint(this);
+                }
+                Creature dragon = new Creature(pos, this, dragonTemplate);
             }
         }
 

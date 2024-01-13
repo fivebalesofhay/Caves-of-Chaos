@@ -58,7 +58,9 @@ namespace Caves_of_Chaos.UIScripts
                     }
                     if (items.Count == 0) { mode = modes.Grid; return; }
                     DecisionConsole.list = items;
-                    DecisionConsole.onSelection = i => { PlayerManager.player.GetItem(itemsHere[i]); };
+                    DecisionConsole.onSelection = i => { PlayerManager.player.GetItem(itemsHere[i]);
+                        PlayerManager.player.actionPoints -= PlayerManager.player.GetActionTime();
+                    };
                     DecisionConsole.Render();
                 }
                 else if (keyboard.IsKeyPressed(Keys.D)) // Drop item:
@@ -75,7 +77,9 @@ namespace Caves_of_Chaos.UIScripts
                     }
                     if (items.Count == 0) { mode = modes.Grid; return; }
                     DecisionConsole.list = items;
-                    DecisionConsole.onSelection = i => { PlayerManager.player.DropItem(inventoryItems[i]); };
+                    DecisionConsole.onSelection = i => { PlayerManager.player.DropItem(inventoryItems[i]);
+                        PlayerManager.player.actionPoints -= PlayerManager.player.GetActionTime();
+                    };
                     DecisionConsole.Render();
                 }
                 else if (keyboard.IsKeyPressed(Keys.E)) // Equip item:
@@ -96,7 +100,9 @@ namespace Caves_of_Chaos.UIScripts
                     }
                     if (items.Count == 0) { mode = modes.Grid; return; }
                     DecisionConsole.list = items;
-                    DecisionConsole.onSelection = i => { PlayerManager.player.EquipItem(equippableItems[i]); };
+                    DecisionConsole.onSelection = i => { PlayerManager.player.EquipItem(equippableItems[i]);
+                        PlayerManager.player.actionPoints -= PlayerManager.player.GetActionTime();
+                    };
                     DecisionConsole.Render();
                 } 
                 else if (keyboard.IsKeyPressed(Keys.Q)) // Quaff potion:
@@ -117,7 +123,9 @@ namespace Caves_of_Chaos.UIScripts
                     }
                     if (items.Count == 0) { mode = modes.Grid; return; }
                     DecisionConsole.list = items;
-                    DecisionConsole.onSelection = i => { PlayerManager.player.QuaffPotion(potions[i]); };
+                    DecisionConsole.onSelection = i => { PlayerManager.player.QuaffPotion(potions[i]);
+                        PlayerManager.player.actionPoints -= PlayerManager.player.GetActionTime();
+                    };
                     DecisionConsole.Render();
                 }
                 else // Send to PlayerManager

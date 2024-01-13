@@ -382,7 +382,7 @@ namespace Caves_of_Chaos.CreatureScripts
             Boolean died = creature.Damage(damage);
             if (died && this == PlayerManager.player)
             {
-                PlayerManager.GainExp(creature.level * creature.level);
+                PlayerManager.GainExp((creature.level+1) * (creature.level+1));
             }
         }
 
@@ -424,13 +424,13 @@ namespace Caves_of_Chaos.CreatureScripts
                 MessageConsole.strings.Add("You died.");
                 MessageConsole.Render();
             }
+            Debug.WriteLine(name);
             if (name == "dragon")
             {
                 ModeManager.lockedMessage = true;
                 ModeManager.mode = ModeManager.modes.Message;
                 MessageConsole.strings.Clear();
-                MessageConsole.strings.Add("You won!!!!");
-                MessageConsole.strings.Add("Yipeeeeeeeeeeeee :)");
+                MessageConsole.strings.Add("You have slain the dragon!");
                 MessageConsole.Render();
             }
         }
@@ -562,6 +562,11 @@ namespace Caves_of_Chaos.CreatureScripts
         public double GetMovementTime()
         {
             return GameSettings.BASE_MOVEMENT_TIME / movementSpeed / actionSpeed;
+        }
+
+        public double GetActionTime()
+        {
+            return GameSettings.BASE_ACTION_TIME / actionSpeed;
         }
 
         public double GetAttackTime()

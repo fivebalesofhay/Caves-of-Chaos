@@ -76,5 +76,16 @@ namespace Caves_of_Chaos.CreatureScripts
                 }
             }
         }
+
+        public static CreatureTemplate GetTemplate(String name)
+        {
+            for (int i = 0; i < templates.Count; i++)
+            {
+                if (templates[i].name == name) return templates[i];
+            }
+
+            Debug.WriteLine("Creature template not found");
+            return templates[0];
+        }
     }
 }

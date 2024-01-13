@@ -28,8 +28,8 @@ namespace Caves_of_Chaos.CreatureScripts
             playerTemplate.color = "white";
             playerTemplate.level = 1;
             playerTemplate.health = 12;
-            playerTemplate.strength = 10;
-            playerTemplate.dexterity = 10;
+            playerTemplate.strength = 0;
+            playerTemplate.dexterity = 0;
             playerTemplate.movementSpeed = 1;
             playerTemplate.actionSpeed = 1;
             playerTemplate.tags = new String[0];
@@ -52,9 +52,9 @@ namespace Caves_of_Chaos.CreatureScripts
         public static void GainExp(int expGained)
         {
             exp += expGained;
-            if (exp >= player.level * player.level * EXP_COEFFICIENT)
+            if (exp >= (player.level+1) * (player.level + 1) * EXP_COEFFICIENT)
             {
-                exp = exp - player.level * player.level * EXP_COEFFICIENT;
+                exp = exp - (player.level + 1) * (player.level + 1) * EXP_COEFFICIENT;
                 LevelUp();
             }
         }
@@ -63,7 +63,7 @@ namespace Caves_of_Chaos.CreatureScripts
         {
             player.level++;
             player.maxHealth = 6 + 6 * player.level;
-            if (player.level % LEVELS_PER_STAT_INCREASE == 0)
+            if (player.level % LEVELS_PER_STAT_INCREASE == 0 && !ModeManager.lockedMessage)
             {
                 ModeManager.IncreaseStats();
             }

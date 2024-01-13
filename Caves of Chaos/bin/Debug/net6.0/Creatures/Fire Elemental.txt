@@ -2,13 +2,13 @@
   "name": "fire elemental",
   "symbol": "E",
   "color": "red",
-  "level": 7,
-  "health": 35,
+  "level": 8,
+  "health": 50,
   "strength": 2,
   "dexterity": 2,
   "baseAttackRolls": 1,
-  "baseAttackDie": 10,
-  "movementSpeed": 1,
-  "actionSpeed": 1.5,
+  "baseAttackDie": 12,
+  "movementSpeed": 0.5,
+  "actionSpeed": 2,
   "tags": ["AGRESSIVE"]
 }
